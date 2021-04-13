@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -13,6 +14,11 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Category::factory()->createMany([
+            ['name' => 'Category 1'],
+            ['name' => 'Category 2'],
+            ['name' => 'Category 3'],
+            ['name' => 'Category 4'],
+        ]);
     }
 }

@@ -1,123 +1,95 @@
 <?php
 
-namespace Tests\Feature;
-
-use App\Http\Livewire\CreateIdea;
-use App\Models\Category;
-use App\Models\Status;
+use App\Models\Idea;
 use App\Models\User;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
-use Tests\TestCase;
 
-class CreateIdeaTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    /** @test */
-    public function create_idea_form_does_not_show_when_logged_out()
-    {
-        $response = $this->get(route('idea.index'));
 
-        $response->assertSuccessful();
-        $response->assertSee('Please login to create an idea.');
-        $response->assertDontSee('Let us know what you would like and we\'ll take a look over!');
-    }
+test("create_idea_form_does_not_show_when_logged_out", function () {
+    $this->get(route("idea.index"))
+        ->assertSee("Please login to create an idea")
+        ->assertDontSeeLivewire("create-idea");
+});
 
-    /** @test */
-    public function create_idea_form_does_show_when_logged_in()
-    {
-        $response = $this->actingAs(User::factory()->create())->get(route('idea.index'));
 
-        $response->assertSuccessful();
-        $response->assertDontSee('Please login to create an idea.');
-        $response->assertSee('Let us know what you would like and we\'ll take a look over!', false);
-    }
+test("create_idea_form_shows_when_logged_in", function () {
+    $this->actingAs(User::factory()->create());
 
-    /** @test */
-    public function main_page_contains_create_idea_livewire_component()
-    {
-        $this->actingAs(User::factory()->create())
-            ->get(route('idea.index'))
-            ->assertSeeLivewire('create-idea');
-    }
+    $this->get(route("idea.index"))
+        ->assertDontSee("Please login to create an idea")
+        ->assertSee("Let us know what you would like and we'll take a look over!", false)
+        ->assertSeeLivewire("create-idea");
+});
 
-    /** @test */
-    public function create_idea_form_validation_works()
-    {
-        Livewire::actingAs(User::factory()->create())
-            ->test(CreateIdea::class)
-            ->set('title', '')
-            ->set('category', '')
-            ->set('description', '')
-            ->call('createIdea')
-            ->assertHasErrors(['title', 'category', 'description'])
-            ->assertSee('The title field is required');
-    }
 
-    /** @test */
-    public function creating_an_idea_works_correctly()
-    {
-        $user = User::factory()->create();
+test("form_shows_error_messages_if_validation_fails", function () {
+    (new StatusSeeder)->run();
+    (new CategorySeeder)->run();
 
-        $categoryOne = Category::factory()->create(['name' => 'Category 1']);
-        $categoryTwo = Category::factory()->create(['name' => 'Category 2']);
+    Livewire::actingAs(User::factory()->create())
+        ->test("create-idea")
+        ->set("title", "")
+        ->set("description", "123")
+        ->call("createIdea")
+        ->assertSee("The title field is required")
+        ->assertSee("The description must be at least 10 characters");
+});
 
-        $statusOpen = Status::factory()->create(['name' => 'Open', 'classes' => 'bg-gray-200']);
 
-        Livewire::actingAs($user)
-            ->test(CreateIdea::class)
-            ->set('title', 'My First Idea')
-            ->set('category', $categoryOne->id)
-            ->set('description', 'This is my first idea')
-            ->call('createIdea')
-            ->assertRedirect('/');
+test("form_does_not_create_new_records_if_validation_fails", function () {
+    (new StatusSeeder)->run();
+    (new CategorySeeder)->run();
 
-        $response = $this->actingAs($user)->get(route('idea.index'));
-        $response->assertSuccessful();
-        $response->assertSee('My First Idea');
-        $response->assertSee('This is my first idea');
+    $ideasCountBefore = Idea::count();
 
-        $this->assertDatabaseHas('ideas', [
-            'title' => 'My First Idea'
-        ]);
-    }
+    Livewire::actingAs(User::factory()->create())
+        ->test("create-idea")
+        ->set("title", "")
+        ->set("description", "")
+        ->set("category", "")
+        ->call("createIdea");
 
-    /** @test */
-    public function creating_two_ideas_with_same_title_still_works_but_has_different_slugs()
-    {
-        $user = User::factory()->create();
+    $ideasCountAfter = Idea::count();
 
-        $categoryOne = Category::factory()->create(['name' => 'Category 1']);
-        $categoryTwo = Category::factory()->create(['name' => 'Category 2']);
+    $this->assertEquals($ideasCountBefore, $ideasCountAfter);
+});
 
-        $statusOpen = Status::factory()->create(['name' => 'Open', 'classes' => 'bg-gray-200']);
 
-        Livewire::actingAs($user)
-            ->test(CreateIdea::class)
-            ->set('title', 'My First Idea')
-            ->set('category', $categoryOne->id)
-            ->set('description', 'This is my first idea')
-            ->call('createIdea')
-            ->assertRedirect('/');
+test("form_shows_success_message_and_persists_database_record_if_validation_passes", function () {
+    (new StatusSeeder)->run();
+    (new CategorySeeder)->run();
 
-        $this->assertDatabaseHas('ideas', [
-            'title' => 'My First Idea',
-            'slug' => 'my-first-idea'
-        ]);
+    $ideaTitle = "The new idea title";
+    $ideaDescription = "The new idea description";
+    $ideaCategory = 3;
 
-        Livewire::actingAs($user)
-            ->test(CreateIdea::class)
-            ->set('title', 'My First Idea')
-            ->set('category', $categoryOne->id)
-            ->set('description', 'This is my first idea')
-            ->call('createIdea')
-            ->assertRedirect('/');
+    $ideasCountBefore = Idea::count();
 
-        $this->assertDatabaseHas('ideas', [
-            'title' => 'My First Idea',
-            'slug' => 'my-first-idea-1'
-        ]);
-    }
-}
+    Livewire::actingAs(User::factory()->create())
+        ->test("create-idea")
+        ->set("title", $ideaTitle)
+        ->set("description", $ideaDescription)
+        ->set("category", $ideaCategory)
+        ->call("createIdea")
+        ->assertRedirect(route("idea.index"));
+
+    $ideasCountAfter = Idea::count();
+
+    $this->assertEquals($ideasCountBefore + 1, $ideasCountAfter);
+
+    $this->assertDatabaseHas("ideas", [
+        "title" => $ideaTitle,
+        "category_id" => $ideaCategory,
+        "description" => $ideaDescription,
+    ]);
+
+    $this->get(route("idea.index"))
+        ->assertSee("The idea was successfuly created!")
+        ->assertSee($ideaTitle)
+        ->assertSee($ideaDescription);
+});

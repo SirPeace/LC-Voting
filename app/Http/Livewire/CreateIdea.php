@@ -14,9 +14,9 @@ class CreateIdea extends Component
     public $description;
 
     protected $rules = [
-        'title' => 'required|min:4',
+        'title' => 'required|min:10',
         'category' => 'required|integer',
-        'description' => 'required|min:4',
+        'description' => 'required|min:10',
     ];
 
     public function createIdea()
@@ -32,7 +32,7 @@ class CreateIdea extends Component
                 'description' => $this->description,
             ]);
 
-            session()->flash('success_message', 'Idea was added successfully.');
+            session()->flash('success_message', 'The idea was successfuly created!');
 
             $this->reset();
 
