@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="filters flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6">
         <div class="w-full md:w-1/3">
-            <select name="category" id="category" class="w-full rounded-xl border-none px-4 py-2">
+            <select name="category" id="category" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
                 <option value="Category One">Category One</option>
                 <option value="Category Two">Category Two</option>
                 <option value="Category Three">Category Three</option>
@@ -9,7 +9,7 @@
             </select>
         </div>
         <div class="w-full md:w-1/3">
-            <select name="other_filters" id="other_filters" class="w-full rounded-xl border-none px-4 py-2">
+            <select name="other_filters" id="other_filters" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
                 <option value="Filter One">Filter One</option>
                 <option value="Filter Two">Filter Two</option>
                 <option value="Filter Three">Filter Three</option>
@@ -17,7 +17,7 @@
             </select>
         </div>
         <div class="w-full md:w-2/3 relative">
-            <input type="search" placeholder="Find an idea" class="w-full rounded-xl bg-white border-none placeholder-gray-900 px-4 py-2 pl-8">
+            <input type="search" placeholder="Find an idea" class="w-full rounded-xl bg-white border-none placeholder-gray-900 px-4 py-2 pl-8 transition duration-150 ease-in">
             <div class="absolute top-0 flex itmes-center h-full ml-2">
                 <svg class="w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -59,11 +59,13 @@
                         </a>
                     </div>
                     <div class="w-full flex flex-col justify-between mx-2 md:mx-4">
-                        <h4 class="text-xl font-semibold mt-2 md:mt-0">
-                            <a href="{{ route('idea.show', $idea) }}" class="idea-link hover:underline">{{ $idea->title }}</a>
-                        </h4>
-                        <div class="text-gray-600 mt-3 line-clamp-3">
-                            {{ $idea->description }}
+                        <div>
+                            <h4 class="text-xl font-semibold mt-2 md:mt-0">
+                                <a href="{{ route('idea.show', $idea) }}" class="idea-link hover:underline">{{ $idea->title }}</a>
+                            </h4>
+                            <div class="text-gray-600 mt-3 line-clamp-3">
+                                {{ $idea->description }}
+                            </div>
                         </div>
 
                         <div class="flex flex-col md:flex-row md:items-center justify-between mt-6">

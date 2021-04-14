@@ -27,9 +27,14 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
 
-                                <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
+                                <a
+                                    href="{{ route('logout') }}"
+                                    class="text-sm text-gray-700 underline"
+                                    onclick="
+                                        event.preventDefault();
+                                        this.closest('form').submit();
+                                    "
+                                >
                                     {{ __('Log out') }}
                                 </a>
                             </form>
@@ -43,7 +48,15 @@
                     </div>
                 @endif
                 <a href="#">
-                    <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="avatar" class="w-10 h-10 rounded-full">
+                    <img
+                        src="{{
+                            auth()->check()
+                                ? auth()->user()->getAvatar()
+                                : 'https://www.gravatar.com/avatar?d=mp'
+                        }}"
+                        alt="avatar"
+                        class="w-10 h-10 rounded-full"
+                    >
                 </a>
             </div>
         </header>
@@ -74,18 +87,18 @@
                     @auth
                         <livewire:create-idea />
                     @else
-                        <div class="my-6 text-center">
+                        <div class="my-4 text-center px-4 space-y-3">
                             <a
                                 href="{{ route('login') }}"
-                                class="inline-block justify-center w-1/2 h-11 text-xs bg-blue text-white font-semibold rounded-xl border border-blue hover:bg-blue-hover transition duration-150 ease-in px-6 py-3"
+                                class="inline-block justify-center w-full h-11 text-xs bg-blue text-white font-semibold rounded-xl border border-blue hover:bg-blue-hover transition duration-150 ease-in px-6 py-3"
                             >
-                                <span class="ml-1">Login</span>
+                                Log in
                             </a>
                             <a
                                 href="{{ route('register') }}"
-                                class="inline-block justify-center w-1/2 h-11 text-xs bg-gray-200 font-semibold rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3 mt-4"
+                                class="inline-block justify-center w-full h-11 text-xs bg-gray-200 font-semibold rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
                             >
-                                Sign Up
+                                Register
                             </a>
                         </div>
                     @endauth

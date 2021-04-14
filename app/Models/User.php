@@ -41,6 +41,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getFirstNameAttribute(): string
+    {
+        return explode(' ', $this->name, 2)[0];
+    }
+
+    public function getLastNameAttribute(): string
+    {
+        return explode(' ', $this->name, 2)[1];
+    }
+
     public function ideas()
     {
         return $this->hasMany(Idea::class);
@@ -55,10 +65,10 @@ class User extends Authenticatable
             : ord(strtolower($firstCharacter)) - 96;
 
         return 'https://www.gravatar.com/avatar/'
-            .md5($this->email)
-            .'?s=200'
-            .'&d=https://s3.amazonaws.com/laracasts/images/forum/avatars/default-avatar-'
-            .$integerToUse
-            .'.png';
+            . md5($this->email)
+            . '?s=200'
+            . '&d=https://s3.amazonaws.com/laracasts/images/forum/avatars/default-avatar-'
+            . $integerToUse
+            . '.png';
     }
 }
