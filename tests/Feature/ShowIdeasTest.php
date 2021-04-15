@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Status;
+use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,6 +15,8 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     (new CategorySeeder)->run();
     (new StatusSeeder)->run();
+
+    $this->user = User::factory()->create();
 
     $this->categoryOne = Category::find(1);
     $this->categoryTwo = Category::find(2);
@@ -27,12 +30,14 @@ beforeEach(function () {
             'description' => 'Description of my first idea',
             'category_id' => $this->categoryOne,
             'status_id' => $this->statusOpen,
+            'user_id' => $this->user->id,
         ],
         [
             'title' => 'My Second Idea',
             'description' => 'Description of my second idea',
             'category_id' => $this->categoryTwo,
             'status_id' => $this->statusConsidering,
+            'user_id' => $this->user->id,
         ]
     ]);
 });
@@ -62,11 +67,14 @@ test("single_idea_shows_correctly_on_the_show_page", function () {
 });
 
 test("ideas_pagination_works", function () {
-    Idea::factory(Idea::PAGINATION_COUNT - 2)->create();
+    Idea::factory(Idea::PAGINATION_COUNT - 2)->create([
+        'user_id' => $this->user->id,
+    ]);
 
     $ideaLast = Idea::factory()->create([
         'title' => 'My Last Idea',
         'description' => 'Description of my last idea',
+        'user_id' => $this->user->id,
     ]);
 
     $this->get(route('idea.index'))
@@ -82,6 +90,7 @@ test("same_idea_title_different_slugs", function () {
     $newIdea = Idea::factory()->create([
         'title' => 'My First Idea',
         'description' => 'Description of my new idea',
+        'user_id' => $this->user->id,
     ]);
 
     $this->get(route('idea.show', $this->ideaOne))->assertSuccessful();

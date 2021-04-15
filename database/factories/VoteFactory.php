@@ -2,17 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Models\Idea;
+use App\Models\User;
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CategoryFactory extends Factory
+class VoteFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Category::class;
+    protected $model = Vote::class;
 
     /**
      * Define the model's default state.
@@ -21,6 +23,9 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'user_id' => $this->faker->numberBetween(1, User::count()),
+            'idea_id' => $this->faker->numberBetween(1, Idea::count()),
+        ];
     }
 }

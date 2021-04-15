@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -51,9 +53,14 @@ class User extends Authenticatable
         return explode(' ', $this->name, 2)[1];
     }
 
-    public function ideas()
+    public function ideas(): HasMany
     {
         return $this->hasMany(Idea::class);
+    }
+
+    public function votes(): BelongsToMany
+    {
+        return $this->belongsToMany(Idea::class, 'votes');
     }
 
     public function getAvatar()

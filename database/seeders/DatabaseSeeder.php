@@ -15,14 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        (new CategorySeeder)->run();
-        (new StatusSeeder)->run();
-        (new IdeaSeeder)->run();
+        User::factory(100)->create();
 
         User::factory()->create([
             "name" => "Roman Khabibulin",
             "email" => "roman.khabibulin13@gmail.com",
             "password" => Hash::make("admin"),
         ]);
+
+        (new CategorySeeder)->run();
+        (new StatusSeeder)->run();
+        (new IdeaSeeder)->run();
+        (new VoteSeeder)->run();
     }
 }

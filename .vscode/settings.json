@@ -1,0 +1,24 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "Study Laravel Database",
+            "database": "study_laravel",
+            "username": "postgres"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Laracasts Voting",
+            "database": "lc-voting",
+            "username": "postgres",
+            "password": "HollywoodUndead24/7"
+        }
+    ]
+}
