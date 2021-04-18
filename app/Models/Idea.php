@@ -49,4 +49,45 @@ class Idea extends Model
     {
         return $this->belongsToMany(User::class, 'votes');
     }
+
+    public function isVotedByUser(?User $user): bool
+    {
+        // In case user is not logged in
+        if (!$user) {
+            return false;
+        }
+
+        return Vote::where('idea_id', $this->id)
+            ->where('user_id', $user->id)
+            ->exists();
+    }
+
+    public function voteByUser(?User $user): bool
+    {
+        // In case user is not logged in
+        if (!$user) {
+            return false;
+        }
+
+        Vote::factory()->createOne([
+            'idea_id' => $this->id,
+            'user_id' => $user->id,
+        ]);
+
+        return true;
+    }
+
+    public function unvoteByUser(?User $user): bool
+    {
+        // In case user is not logged in
+        if (!$user) {
+            return false;
+        }
+
+        Vote::where('idea_id', $this->id)
+            ->where('user_id', $user->id)
+            ->delete();
+
+        return true;
+    }
 }

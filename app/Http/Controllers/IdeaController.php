@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
+use App\Models\Vote;
 use Illuminate\Http\Request;
 
 class IdeaController extends Controller
@@ -14,12 +15,17 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        return view('idea.index', [
-            'ideas' => Idea::with('user', 'category', 'status')
-                ->withCount('votes')
-                ->latest('id')
-                ->simplePaginate(Idea::PAGINATION_COUNT),
-        ]);
+        $ideas = Idea::with('user', 'category', 'status') // eager-load relationships (n+1)
+            ->addSelect([ // check if user voted for idea (n+1)
+                'voted_by_user' => Vote::select('id')
+                    ->where('user_id', auth()->id())
+                    ->whereColumn('idea_id', 'ideas.id')
+            ])
+            ->withCount('votes') // get votes count (n+1)
+            ->latest('id')
+            ->simplePaginate(Idea::PAGINATION_COUNT);
+
+        return view('idea.index', compact('ideas'));
     }
 
     /**
@@ -51,9 +57,7 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        return view('idea.show', [
-            'idea' => $idea,
-        ]);
+        return view('idea.show', compact('idea'));
     }
 
     /**
