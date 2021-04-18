@@ -21,17 +21,21 @@ class IdeaIndex extends Component
         $this->isVoted = (bool) $this->idea->voted_by_user;
     }
 
-    public function voteIdea()
+    public function vote()
     {
-        if ($this->idea->voteByUser($this->user)) {
+        if (!$this->user) {
+            return redirect(route('login'));
+        }
+
+        if ($this->idea->vote($this->user)) {
             $this->isVoted = true;
             $this->votesCount += 1;
         }
     }
 
-    public function unvoteIdea()
+    public function unvote()
     {
-        if ($this->idea->unvoteByUser($this->user)) {
+        if ($this->idea->unvote($this->user)) {
             $this->isVoted = false;
             $this->votesCount -= 1;
         }

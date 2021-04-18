@@ -18,20 +18,24 @@ class IdeaShow extends Component
         $this->idea = $idea;
         $this->user = auth()->user();
         $this->votesCount = intval($this->idea->votes()->count());
-        $this->isVoted = $this->idea->isVotedByUser($this->user);
+        $this->isVoted = $this->idea->isVotedBy($this->user);
     }
 
-    public function voteIdea()
+    public function vote()
     {
-        if ($this->idea->voteByUser($this->user)) {
+        if (!$this->user) {
+            return redirect(route('login'));
+        }
+
+        if ($this->idea->vote($this->user)) {
             $this->isVoted = true;
             $this->votesCount += 1;
         }
     }
 
-    public function unvoteIdea()
+    public function unvote()
     {
-        if ($this->idea->unvoteByUser($this->user)) {
+        if ($this->idea->unvote($this->user)) {
             $this->isVoted = false;
             $this->votesCount -= 1;
         }

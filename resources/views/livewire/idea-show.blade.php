@@ -32,22 +32,20 @@
                                 <div class="text-xxs font-semibold leading-none text-gray-400">Votes</div>
                             </div>
 
-                            @if ($user)
-                                @if ($isVoted)
-                                    <button
-                                        class="w-20 bg-blue hover:bg-blue-hover text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
-                                        wire:click="unvoteIdea"
-                                    >
-                                        Voted
-                                    </button>
-                                @else
-                                    <button
-                                        class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
-                                        wire:click="voteIdea"
-                                    >
-                                        Vote
-                                    </button>
-                                @endif
+                            @if ($isVoted)
+                                <button
+                                    class="w-20 bg-blue hover:bg-blue-hover text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
+                                    wire:click="unvote"
+                                >
+                                    Voted
+                                </button>
+                            @else
+                                <button
+                                    class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
+                                    wire:click="vote"
+                                >
+                                    Vote
+                                </button>
                             @endif
                         </div>
 
@@ -180,24 +178,22 @@
                 <div class="text-gray-400 text-xs leading-none">Votes</div>
             </div>
 
-            @if ($user)
-                @if ($isVoted)
-                    <button
-                        wire:click="unvoteIdea"
-                        type="button"
-                        class="w-32 h-11 text-xs bg-blue hover:bg-blue-hover text-white border border-blue font-semibold uppercase rounded-xl  transition duration-150 ease-in px-6 py-3"
-                    >
-                        Voted
-                    </button>
-                @else
-                    <button
-                        wire:click="voteIdea"
-                        type="button"
-                        class="w-32 h-11 text-xs bg-gray-200 font-semibold uppercase rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
-                    >
-                        Vote
-                    </button>
-                @endif
+            @if ($isVoted)
+                <button
+                    wire:click="unvote"
+                    type="button"
+                    class="w-32 h-11 text-xs bg-blue hover:bg-blue-hover text-white border border-blue font-semibold uppercase rounded-xl  transition duration-150 ease-in px-6 py-3"
+                >
+                    Voted
+                </button>
+            @else
+                <button
+                    wire:click="vote"
+                    type="button"
+                    class="w-32 h-11 text-xs bg-gray-200 font-semibold uppercase rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
+                >
+                    Vote
+                </button>
             @endif
         </div>
     </div> <!-- end buttons-container -->

@@ -18,26 +18,23 @@
             <div class="text-gray-500">Votes</div>
         </div>
 
-        @if ($user)
-            <div class="mt-8">
-                @if ($isVoted)
-                    <button
-                        wire:click="unvoteIdea"
-                        class="w-20 bg-blue hover:bg-blue-hover border border-blue text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3"
-                    >
-                        Voted
-                    </button>
-                @else
-                    <button
-                        @if (!$user) disabled @endif
-                        wire:click="voteIdea"
-                        class="w-20 bg-gray-200 border border-gray-200 hover:border-gray-400 font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3"
-                    >
-                        Vote
-                    </button>
-                @endif
-            </div>
-        @endif
+        <div class="mt-8">
+            @if ($isVoted)
+                <button
+                    wire:click="unvote"
+                    class="w-20 bg-blue hover:bg-blue-hover border border-blue text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3"
+                >
+                    Voted
+                </button>
+            @else
+                <button
+                    wire:click="vote"
+                    class="w-20 bg-gray-200 border border-gray-200 hover:border-gray-400 font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3"
+                >
+                    Vote
+                </button>
+            @endif
+        </div>
     </div>
     <div class="flex flex-col md:flex-row flex-1 px-2 py-6">
         <div class="flex-none mx-2 md:mx-0">
@@ -92,23 +89,20 @@
                         <div class="text-xxs font-semibold leading-none text-gray-400">Votes</div>
                     </div>
 
-                    @if ($user)
-                        @if ($isVoted)
-                            <button
-                                class="w-20 bg-blue hover:bg-blue-hover border border-blue text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
-                                wire:click="unvoteIdea"
-                            >
-                                Voted
-                            </button>
-                        @else
-                            <button
-                                @if (!$user) disabled @endif
-                                wire:click="voteIdea"
-                                class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
-                            >
-                                Vote
-                            </button>
-                        @endif
+                    @if ($isVoted)
+                        <button
+                            class="w-20 bg-blue hover:bg-blue-hover border border-blue text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
+                            wire:click="unvote"
+                        >
+                            Voted
+                        </button>
+                    @else
+                        <button
+                            wire:click="vote"
+                            class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
+                        >
+                            Vote
+                        </button>
                     @endif
                 </div>
             </div>

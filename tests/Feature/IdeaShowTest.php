@@ -79,3 +79,35 @@ test("user_can_see_if_the_idea_was_voted_by_him", function () {
         ->assertSeeHtml('<div class="text-sm font-bold leading-none  text-blue ">1</div>')
         ->assertSee('Voted');
 });
+
+
+test("logged_in_user_can_vote", function () {
+    $loggedInUser = User::factory()->create();
+
+    $this->assertDatabaseMissing('votes', [
+        'idea_id' => $this->idea->id,
+        'user_id' => $loggedInUser->id,
+    ]);
+
+    Livewire::actingAs($loggedInUser)
+        ->test("idea-show", ['idea' => $this->idea])
+        ->assertSet('isVoted', false)
+        ->assertSet('votesCount', 0)
+        ->assertSee('Vote')
+        ->call('vote')
+        ->assertSet('isVoted', true)
+        ->assertSet('votesCount', 1)
+        ->assertSee('Voted');
+
+    $this->assertDatabaseHas('votes', [
+        'idea_id' => $this->idea->id,
+        'user_id' => $loggedInUser->id,
+    ]);
+});
+
+
+test("guest_gets_redirected_to_login_page_when_voting", function () {
+    Livewire::test("idea-show", ['idea' => $this->idea])
+        ->call('vote')
+        ->assertRedirect(route('login'));
+});

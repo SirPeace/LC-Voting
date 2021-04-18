@@ -50,7 +50,7 @@ class Idea extends Model
         return $this->belongsToMany(User::class, 'votes');
     }
 
-    public function isVotedByUser(?User $user): bool
+    public function isVotedBy(?User $user): bool
     {
         // In case user is not logged in
         if (!$user) {
@@ -62,14 +62,14 @@ class Idea extends Model
             ->exists();
     }
 
-    public function voteByUser(?User $user): bool
+    public function vote(?User $user): bool
     {
         // In case user is not logged in
         if (!$user) {
             return false;
         }
 
-        Vote::factory()->createOne([
+        Vote::create([
             'idea_id' => $this->id,
             'user_id' => $user->id,
         ]);
@@ -77,7 +77,7 @@ class Idea extends Model
         return true;
     }
 
-    public function unvoteByUser(?User $user): bool
+    public function unvote(?User $user): bool
     {
         // In case user is not logged in
         if (!$user) {
