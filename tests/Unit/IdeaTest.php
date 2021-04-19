@@ -39,27 +39,27 @@ it("can_check_if_specified_user_voted", function () {
         ],
     ]);
 
-    $this->assertTrue($this->idea->isVotedByUser($this->userOne));
-    $this->assertFalse($this->idea->isVotedByUser($this->userTwo));
+    $this->assertTrue($this->idea->isVotedBy($this->userOne));
+    $this->assertFalse($this->idea->isVotedBy($this->userTwo));
 });
 
 
-// it("can_be_voted_by_user", function () {
-//     $this->userOne->voteForIdea($this->idea);
+it("can_be_voted_by_user", function () {
+    $this->idea->vote($this->userOne);
 
-//     $this->assertTrue($this->idea->isVotedByUser($this->userOne));
-//     $this->assertFalse($this->idea->isVotedByUser($this->userTwo));
-// });
+    $this->assertTrue($this->idea->isVotedBy($this->userOne));
+    $this->assertFalse($this->idea->isVotedBy($this->userTwo));
+});
 
 
-// it("can_be_voted_only_once_by_same_user", function () {
-//     $this->userOne->voteForIdea($this->idea);
-//     $this->userOne->voteForIdea($this->idea);
+it("can_be_voted_only_once_by_same_user", function () {
+    $this->idea->vote($this->userOne);
+    $this->idea->vote($this->userOne);
 
-//     $this->assertTrue(
-//         Vote::where([
-//             'user_id' => $this->userOne->id,
-//             'idea_id' => $this->idea->id
-//         ])->count() === 1
-//     );
-// });
+    $this->assertTrue(
+        Vote::where([
+            'user_id' => $this->userOne->id,
+            'idea_id' => $this->idea->id
+        ])->count() === 1
+    );
+});

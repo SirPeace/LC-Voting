@@ -15,17 +15,8 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        $ideas = Idea::with('user', 'category', 'status') // eager-load relationships (n+1)
-            ->addSelect([ // check if user voted for idea (n+1)
-                'voted_by_user' => Vote::select('id')
-                    ->where('user_id', auth()->id())
-                    ->whereColumn('idea_id', 'ideas.id')
-            ])
-            ->withCount('votes') // get votes count (n+1)
-            ->latest('id')
-            ->simplePaginate(Idea::PAGINATION_COUNT);
-
-        return view('idea.index', compact('ideas'));
+        return response(view('idea.index'))
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
 
     /**

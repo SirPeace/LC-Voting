@@ -62,32 +62,17 @@ class Idea extends Model
             ->exists();
     }
 
-    public function vote(?User $user): bool
+    public function vote(?User $user): void
     {
-        // In case user is not logged in
-        if (!$user) {
-            return false;
-        }
+        if ($this->isVotedBy($user)) return;
 
-        Vote::create([
-            'idea_id' => $this->id,
-            'user_id' => $user->id,
-        ]);
-
-        return true;
+        $this->votes()->save($user);
     }
 
-    public function unvote(?User $user): bool
+    public function unvote(?User $user): void
     {
-        // In case user is not logged in
-        if (!$user) {
-            return false;
-        }
+        if (!$this->isVotedBy($user)) return;
 
-        Vote::where('idea_id', $this->id)
-            ->where('user_id', $user->id)
-            ->delete();
-
-        return true;
+        $this->votes()->detach($user);
     }
 }

@@ -17,6 +17,9 @@ beforeEach(function () {
     $this->idea = Idea::factory()->create([
         "user_id" => User::factory()->create(),
     ]);
+
+    $this->idea->votes_count = 0;
+    $this->idea->voted_by_user = 0;
 });
 
 
@@ -26,7 +29,7 @@ test("index_route_displays_index_livewire_component", function () {
 });
 
 
-test("index_page_receives_votes_count_correctly", function () {
+test("ideas_index_component_receives_votes_count_correctly", function () {
     Vote::factory()->createMany([
         [
             "idea_id" => $this->idea->id,
@@ -38,8 +41,8 @@ test("index_page_receives_votes_count_correctly", function () {
         ]
     ]);
 
-    $this->get(route("idea.index"))
-        ->assertViewHas("ideas", function ($ideas) {
+    Livewire::test('ideas-index')
+        ->assertViewHas('ideas', function ($ideas) {
             $this->assertEquals($ideas->first()->id, $this->idea->id);
 
             return intval($ideas->first()->votes_count) === 2;
@@ -47,7 +50,7 @@ test("index_page_receives_votes_count_correctly", function () {
 });
 
 
-test("idea_index_livewire_component_receives_correct_votes_count", function () {
+test("idea_index_component_receives_correct_votes_count", function () {
     Vote::factory()->createMany([
         [
             "idea_id" => $this->idea->id,
@@ -72,11 +75,11 @@ test("user_can_see_if_the_idea_was_voted_by_him", function () {
         "user_id" => $loggedInUser->id,
     ]);
 
-    $response = $this->actingAs($loggedInUser)->get(route('idea.index'));
-    $ideaWithVotes = $response['ideas']->first();
+    $this->idea->votes_count += 1;
+    $this->idea->voted_by_user = $loggedInUser->id;
 
     Livewire::actingAs($loggedInUser)
-        ->test("idea-index", ['idea' => $ideaWithVotes])
+        ->test("idea-index", ['idea' => $this->idea])
         ->assertSet('isVoted', true)
         ->assertSeeHtml('<div class="text-sm font-bold leading-none  text-blue ">1</div>')
         ->assertSee('Voted');
@@ -86,16 +89,13 @@ test("user_can_see_if_the_idea_was_voted_by_him", function () {
 test("logged_in_user_can_vote", function () {
     $loggedInUser = User::factory()->create();
 
-    $response = $this->actingAs($loggedInUser)->get(route('idea.index'));
-    $ideaWithVotes = $response['ideas']->first();
-
     $this->assertDatabaseMissing('votes', [
         'idea_id' => $this->idea->id,
         'user_id' => $loggedInUser->id,
     ]);
 
     Livewire::actingAs($loggedInUser)
-        ->test("idea-index", ['idea' => $ideaWithVotes])
+        ->test("idea-index", ['idea' => $this->idea])
         ->assertSet('isVoted', false)
         ->assertSet('votesCount', 0)
         ->assertSee('Vote')
@@ -112,10 +112,7 @@ test("logged_in_user_can_vote", function () {
 
 
 test("guest_gets_redirected_to_login_page_when_voting", function () {
-    $response = $this->get(route('idea.index'));
-    $ideaWithVotes = $response['ideas']->first();
-
-    Livewire::test("idea-index", ['idea' => $ideaWithVotes])
+    Livewire::test("idea-index", ['idea' => $this->idea])
         ->call('vote')
         ->assertRedirect(route('login'));
 });

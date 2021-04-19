@@ -27,18 +27,16 @@ class IdeaIndex extends Component
             return redirect(route('login'));
         }
 
-        if ($this->idea->vote($this->user)) {
-            $this->isVoted = true;
-            $this->votesCount += 1;
-        }
+        $this->idea->vote($this->user);
+        $this->isVoted = true;
+        $this->votesCount += 1;
     }
 
     public function unvote()
     {
-        if ($this->idea->unvote($this->user)) {
-            $this->isVoted = false;
-            $this->votesCount -= 1;
-        }
+        $this->idea->unvote($this->user);
+        $this->isVoted = false;
+        $this->votesCount -= 1;
     }
 
     public function render()
