@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Status;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -9,9 +10,11 @@ use Livewire\Component;
 class StatusFilters extends Component
 {
     /**
-     * @var string|null $status 'considering'|'in_progress'|'implemented'|'closed'
+     * @var $status 'open'|'considering'|'in_progress'|'implemented'|'closed'
      */
-    public ?string $status = '';
+    public string $status = '';
+    public array $statusesCount;
+    public bool $onIndexPage;
 
     protected $queryString = [
         'status' => ['except' => ''],
@@ -19,19 +22,23 @@ class StatusFilters extends Component
 
     public function mount(): void
     {
-        if (Route::currentRouteName() !== 'idea.index') {
+        $this->statusesCount = Status::countAll();
+        $this->onIndexPage = Route::currentRouteName() === 'idea.index';
+
+        if (!$this->onIndexPage) {
             $this->queryString = [];
-            $this->status = null;
+            $this->status = '';
         }
     }
 
     public function updating($name, $value)
     {
-        // if ($this->getPreviousRouteName() !== 'idea.index' && $name === 'status') {
-        return redirect()->to(
-            route('idea.index', ['status' => $value])
-        );
-        // }
+        // $this->getPreviousRouteName() !== 'idea.index' &&
+        if ($name === 'status') {
+            return redirect()->to(
+                route('idea.index', ['status' => $value])
+            );
+        }
     }
 
     public function render(): View
