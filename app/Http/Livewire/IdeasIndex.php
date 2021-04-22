@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Status;
 use App\Models\Vote;
@@ -10,17 +11,41 @@ use Livewire\WithPagination;
 
 class IdeasIndex extends Component
 {
-    // use WithPagination;
+    use WithPagination;
+
+    public string $status = '';
+    public string $category = '';
+
+    protected $queryString = [
+        'status' => ['except' => ''],
+        'category' => ['except' => ''],
+    ];
+
+    protected $listeners = ['updateQueryStringStatus'];
+
+    public function updateQueryStringStatus(string $value)
+    {
+        $this->resetPage();
+        $this->status = $value;
+    }
 
     public function render()
     {
-        $statuses = Status::pluck('id', 'name');
+        $categories = Category::all();
 
         $ideas = Idea::with('user', 'category', 'status') // eager-load relationships (n+1)
             ->when(
-                request()->status,
-                function ($query) use ($statuses) {
-                    return $query->where('status_id', $statuses[request()->status]);
+                $this->status,
+                function ($query) {
+                    $statuses = Status::pluck('id', 'name');
+                    return $query->where('status_id', $statuses[$this->status]);
+                }
+            )
+            ->when(
+                $this->category,
+                function ($query) use ($categories) {
+                    $categories = $categories->pluck('id', 'name');
+                    return $query->where('category_id', $categories[$this->category]);
                 }
             )
             ->addSelect([ // check if user voted for idea (n+1)
@@ -32,6 +57,6 @@ class IdeasIndex extends Component
             ->latest('id')
             ->simplePaginate(Idea::PAGINATION_COUNT);
 
-        return view('livewire.ideas-index', compact('ideas'));
+        return view('livewire.ideas-index', compact('ideas', 'categories'));
     }
 }

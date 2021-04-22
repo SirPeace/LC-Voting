@@ -10,30 +10,27 @@ use Livewire\Component;
 class StatusFilters extends Component
 {
     /**
-     * @var $status 'open'|'considering'|'in_progress'|'implemented'|'closed'
+     * @var $status ''|'open'|'considering'|'in_progress'|'implemented'|'closed'
      */
-    public string $status = '';
+    public string $status;
     public bool $onIndexPage = true;
     public array $statusesCount;
-
-    protected $queryString = [
-        'status' => ['except' => ''],
-    ];
 
     public function mount(): void
     {
         $this->statusesCount = Status::getStatusesCount();
+        $this->status = request()->status ?? '';
 
         if (!$this->onIndexPage) {
-            $this->queryString = [];
             $this->status = '';
         }
     }
 
-    public function updating($name, $value)
+    public function updatingStatus(string $value)
     {
-        // $this->getPreviousRouteName() !== 'idea.index' &&
-        if ($name === 'status') {
+        $this->emit('updateQueryStringStatus', $value);
+
+        if ($this->getPreviousRouteName() !== 'idea.index') {
             return redirect()->to(
                 route('idea.index', ['status' => $value])
             );
