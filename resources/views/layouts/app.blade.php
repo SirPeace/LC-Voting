@@ -108,7 +108,9 @@
                 </div>
             </div>
             <div class="w-full px-2 md:px-0 md:w-175">
-                <livewire:status-filters />
+                <livewire:status-filters
+                    :onIndexPage="Route::currentRouteName() === 'idea.index'"
+                />
 
                 <div class="mt-8">
                     {{ $slot }}

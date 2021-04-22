@@ -13,8 +13,8 @@ class StatusFilters extends Component
      * @var $status 'open'|'considering'|'in_progress'|'implemented'|'closed'
      */
     public string $status = '';
+    public bool $onIndexPage = true;
     public array $statusesCount;
-    public bool $onIndexPage;
 
     protected $queryString = [
         'status' => ['except' => ''],
@@ -22,8 +22,7 @@ class StatusFilters extends Component
 
     public function mount(): void
     {
-        $this->statusesCount = Status::countAll();
-        $this->onIndexPage = Route::currentRouteName() === 'idea.index';
+        $this->statusesCount = Status::getStatusesCount();
 
         if (!$this->onIndexPage) {
             $this->queryString = [];
