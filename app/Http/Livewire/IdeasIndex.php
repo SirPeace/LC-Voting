@@ -15,10 +15,12 @@ class IdeasIndex extends Component
 
     public string $status = '';
     public string $category = '';
+    public string $filter = '';
 
     protected $queryString = [
         'status' => ['except' => ''],
         'category' => ['except' => ''],
+        'filter' => ['except' => ''],
     ];
 
     protected $listeners = ['updateQueryStringStatus'];
@@ -46,6 +48,18 @@ class IdeasIndex extends Component
                 function ($query) use ($categories) {
                     $categories = $categories->pluck('id', 'name');
                     return $query->where('category_id', $categories[$this->category]);
+                }
+            )
+            ->when(
+                $this->filter,
+                function ($query) {
+                    if ($this->filter === 'top_voted') {
+                        return $query->orderByDesc('votes_count');
+                    }
+
+                    if ($this->filter === 'my_ideas') {
+                        return $query->where('user_id', auth()->id());
+                    }
                 }
             )
             ->addSelect([ // check if user voted for idea (n+1)
