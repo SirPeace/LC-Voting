@@ -41,10 +41,13 @@ beforeEach(function () {
 
 
 test('filtering_works_when_query_string_in_place', function () {
-    $this->get(route('idea.index', ['status' => 'in_progress']))
-        ->assertSuccessful()
-        ->assertDontSee('<div class="bg-purple text-white text-xxs font-bold uppercase leading-none rounded-full text-center w-28 h-7 py-2 px-4">Considering</div>', false)
-        ->assertSee('<div class="bg-yellow text-white text-xxs font-bold uppercase leading-none rounded-full text-center w-28 h-7 py-2 px-4">In Progress</div>', false);
+    Livewire::withQueryParams(['status' => 'in_progress'])
+        ->test('ideas-index')
+        ->assertViewHas('ideas', function ($ideas) {
+            return $ideas->count() === 3
+                && $ideas->every(fn ($idea) => $idea->status_id == 3);
+        })
+        ->assertSeeHtmlInOrder(['bg-yellow', 'In Progress']);
 });
 
 
