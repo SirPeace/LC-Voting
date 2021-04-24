@@ -27,8 +27,13 @@ class IdeasIndex extends Component
 
     public function updateQueryStringStatus(string $value)
     {
-        $this->resetPage();
         $this->status = $value;
+        $this->resetPage();
+    }
+
+    public function updating(string $name, $value)
+    {
+        $this->resetPage();
     }
 
     public function render()

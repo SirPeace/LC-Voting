@@ -1,7 +1,7 @@
 <div>
     <div class="filters flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6">
         <div class="w-full md:w-1/3">
-            <select wire:model="category" name="category" id="category" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
+            <select wire:model="category" name="category" id="category" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in cursor-pointer">
                 <option value="">All categories</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->name }}">{{ $category->alias }}</option>
@@ -9,7 +9,7 @@
             </select>
         </div>
         <div class="w-full md:w-1/3">
-            <select wire:model="filter" name="other_filters" id="other_filters" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
+            <select wire:model="filter" name="other_filters" id="other_filters" class="w-full rounded-xl border-none px-4 py-2 transition duration-150 ease-in cursor-pointer">
                 <option value="">No Filter</option>
                 <option value="top_voted">Top Voted</option>
                 @auth
@@ -28,9 +28,14 @@
     </div> <!-- end filters -->
 
     <div class="ideas-container space-y-6 my-8">
-        @foreach ($ideas as $idea)
+        @forelse ($ideas as $idea)
             <livewire:idea-index :idea="$idea" :key="$idea->id" />
-        @endforeach
+        @empty
+            <p class="text-base text-center">
+                <span class="font-semibold block mb-2 text-xl">No ideas were found...</span>
+                May be you should publish the one?
+            </p>
+        @endforelse
     </div> <!-- end ideas-container -->
 
     <div class="my-8">
