@@ -40,9 +40,10 @@ beforeEach(function () {
 });
 
 
-test('filtering_works_when_query_string_in_place', function () {
+test('filtering_works_when_query_string_parameter_is_set', function () {
     Livewire::withQueryParams(['status' => 'in_progress'])
         ->test('ideas-index')
+        ->assertSet('status', 'in_progress')
         ->assertViewHas('ideas', function ($ideas) {
             return $ideas->count() === 3
                 && $ideas->every(fn ($idea) => $idea->status_id == 3);

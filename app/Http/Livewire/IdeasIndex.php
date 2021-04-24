@@ -62,7 +62,7 @@ class IdeasIndex extends Component
                         return $query->orderByDesc('votes_count');
                     }
 
-                    if ($this->filter === 'my_ideas') {
+                    if ($this->filter === 'user_ideas') {
                         return $query->where('user_id', auth()->id());
                     }
                 }
