@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Status;
 use App\Models\Vote;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,11 +17,13 @@ class IdeasIndex extends Component
     public string $status = '';
     public string $category = '';
     public string $filter = '';
+    public string $search = '';
 
     protected $queryString = [
         'status' => ['except' => ''],
         'category' => ['except' => ''],
         'filter' => ['except' => ''],
+        'search' => ['except' => ''],
     ];
 
     protected $listeners = ['updateQueryStringStatus'];
@@ -66,6 +69,10 @@ class IdeasIndex extends Component
                         return $query->where('user_id', auth()->id());
                     }
                 }
+            )
+            ->when(
+                mb_strlen($this->search) >= 3,
+                fn ($query) => $query->where('title', 'ilike', "%$this->search%")
             )
             ->addSelect([ // check if user voted for idea (n+1)
                 'voted_by_user' => Vote::select('id')
