@@ -3,6 +3,7 @@
         <li>
             <a
                 wire:click.prevent="$set('status', '')"
+                href="{{ route('idea.index') }}"
                 class="@if (!$status && $onIndexPage) border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >
@@ -12,6 +13,7 @@
         <li>
             <a
                 wire:click.prevent="$set('status', 'open')"
+                href="{{ route('idea.index', ['status' => 'open']) }}"
                 class="@if ($status === 'open') border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >
@@ -21,6 +23,7 @@
         <li>
             <a
                 wire:click.prevent="$set('status', 'considering')"
+                href="{{ route('idea.index', ['status' => 'considering']) }}"
                 class="@if ($status === 'considering') border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >
@@ -30,6 +33,7 @@
         <li>
             <a
                 wire:click.prevent="$set('status', 'in_progress')"
+                href="{{ route('idea.index', ['status' => 'in_progress']) }}"
                 class="@if ($status === 'in_progress') border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >
@@ -42,6 +46,7 @@
         <li>
             <a
                 wire:click.prevent="$set('status', 'implemented')"
+                href="{{ route('idea.index', ['status' => 'implemented']) }}"
                 class="@if ($status === 'implemented') border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >
@@ -51,6 +56,7 @@
         <li>
             <a
                 wire:click="$set('status', 'closed')"
+                href="{{ route('idea.index', ['status' => 'closed']) }}"
                 class="@if ($status === 'closed') border-blue text-gray-900 @endif
                 transition duration-150 ease-in border-b-4 pb-3 hover:border-blue cursor-pointer"
             >

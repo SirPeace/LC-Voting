@@ -1,7 +1,7 @@
 <div>
     <div class="idea-container bg-white rounded-xl flex mt-4">
         <div class="flex flex-col md:flex-row flex-1 px-4 py-6">
-            <div class="flex-none mx-2 md:mx-4">
+            <div class="flex-none mx-2 md:mx-2">
                 <a href="#">
                     <img src="{{ $idea->user->getAvatar() }}" alt="avatar" class="w-14 h-14 rounded-xl">
                 </a>
