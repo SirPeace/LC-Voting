@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
-use App\Models\Vote;
 use Illuminate\Http\Request;
 
 class IdeaController extends Controller
@@ -48,7 +47,11 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        return view('idea.show', compact('idea'));
+        $backURL = url()->previous() !== url()->current()
+            ? url()->previous()
+            : route('idea.index');
+
+        return view('idea.show', compact('idea', 'backURL'));
     }
 
     /**

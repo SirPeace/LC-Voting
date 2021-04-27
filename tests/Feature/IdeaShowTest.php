@@ -111,3 +111,19 @@ test("guest_gets_redirected_to_login_page_when_voting", function () {
         ->call('vote')
         ->assertRedirect(route('login'));
 });
+
+
+test("back_link_does_not_emit_query_string_if_index_page_was_visited_first", function () {
+    $queryString = '?filter=top_voted&status=implemented';
+
+    $this->get(route('idea.index') . $queryString);
+    $response = $this->get(route('idea.show', $this->idea));
+
+    $this->assertStringContainsString($queryString, $response['backURL']);
+});
+
+
+test("back_link_redirects_to_index_page_if_show_page_was_visited_first", function () {
+    $response = $this->get(route('idea.show', $this->idea));
+    $this->assertEquals(route('idea.index'), $response['backURL']);
+});
