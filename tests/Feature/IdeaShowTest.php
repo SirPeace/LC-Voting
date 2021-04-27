@@ -125,5 +125,6 @@ test("back_link_does_not_emit_query_string_if_index_page_was_visited_first", fun
 
 test("back_link_redirects_to_index_page_if_show_page_was_visited_first", function () {
     $response = $this->get(route('idea.show', $this->idea));
+
     $this->assertEquals(route('idea.index'), $response['backURL']);
 });
