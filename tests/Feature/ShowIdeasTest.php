@@ -49,11 +49,11 @@ test("list_of_ideas_shows_on_main_page", function () {
 
         ->assertSee($this->ideaOne->title)
         ->assertSee($this->ideaOne->description)
-        ->assertSee($this->categoryOne->name)
+        ->assertSee($this->categoryOne->alias)
 
         ->assertSee($this->ideaTwo->title)
         ->assertSee($this->ideaTwo->description)
-        ->assertSee($this->categoryTwo->name);
+        ->assertSee($this->categoryTwo->alias);
 });
 
 
@@ -63,7 +63,7 @@ test("single_idea_shows_correctly_on_the_show_page", function () {
 
         ->assertSee($this->ideaOne->title)
         ->assertSee($this->ideaOne->description)
-        ->assertSee($this->categoryOne->name);
+        ->assertSee($this->categoryOne->alias);
 });
 
 test("ideas_pagination_works", function () {
