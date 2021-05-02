@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Interfaces\IVotable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Idea extends Model
+class Idea extends Model implements IVotable
 {
     use HasFactory, Sluggable;
 
@@ -45,34 +46,8 @@ class Idea extends Model
         return $this->belongsTo(Status::class);
     }
 
-    public function votes(): BelongsToMany
+    public function votes(): MorphToMany
     {
-        return $this->belongsToMany(User::class, 'votes');
-    }
-
-    public function isVotedBy(?User $user): bool
-    {
-        // In case user is not logged in
-        if (!$user) {
-            return false;
-        }
-
-        return Vote::where('idea_id', $this->id)
-            ->where('user_id', $user->id)
-            ->exists();
-    }
-
-    public function vote(?User $user): void
-    {
-        if ($this->isVotedBy($user)) return;
-
-        $this->votes()->save($user);
-    }
-
-    public function unvote(?User $user): void
-    {
-        if (!$this->isVotedBy($user)) return;
-
-        $this->votes()->detach($user);
+        return $this->morphToMany(User::class, 'votable');
     }
 }

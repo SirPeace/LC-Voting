@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Idea;
-use App\Models\Vote;
+use App\Models\Votable;
 use Illuminate\Http\Response;
 use Livewire\Component;
 
@@ -33,9 +33,10 @@ class CreateIdea extends Component
                 'description' => $this->description,
             ]);
 
-            Vote::create([
+            Votable::create([
                 'user_id' => auth()->id(),
-                'idea_id' => $idea->id,
+                'votable_id' => $idea->id,
+                'votable_type' => Idea::class,
             ]);
 
             session()->flash('success_message', 'The idea was successfuly created!');

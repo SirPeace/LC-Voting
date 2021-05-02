@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             "name" => "Roman Khabibulin",
-            "email" => "roman.khabibulin13@gmail.com",
+            "email" => "roman.khabibulin12@gmail.com",
             "password" => Hash::make("admin"),
         ]);
 
         (new CategorySeeder)->run();
         (new StatusSeeder)->run();
         (new IdeaSeeder)->run();
-        (new VoteSeeder)->run();
+        (new VotableSeeder)->run();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Idea;
 use App\Models\User;
+use App\Voter;
 use Livewire\Component;
 
 class IdeaIndex extends Component
@@ -27,14 +28,14 @@ class IdeaIndex extends Component
             return redirect(route('login'));
         }
 
-        $this->idea->vote($this->user);
+        $this->getVoter()->vote($this->user);
         $this->isVoted = true;
         $this->votesCount += 1;
     }
 
     public function unvote()
     {
-        $this->idea->unvote($this->user);
+        $this->getVoter()->unvote($this->user);
         $this->isVoted = false;
         $this->votesCount -= 1;
     }
@@ -42,5 +43,10 @@ class IdeaIndex extends Component
     public function render()
     {
         return view('livewire.idea-index');
+    }
+
+    private function getVoter(): Voter
+    {
+        return new Voter($this->idea);
     }
 }

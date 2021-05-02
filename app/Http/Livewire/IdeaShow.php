@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Idea;
 use App\Models\User;
+use App\Voter;
 use Livewire\Component;
 
 class IdeaShow extends Component
@@ -25,7 +26,8 @@ class IdeaShow extends Component
         $this->idea = $idea;
         $this->user = auth()->user();
         $this->votesCount = intval($this->idea->votes()->count());
-        $this->isVoted = $this->idea->isVotedBy($this->user);
+
+        $this->isVoted = $this->getVoter()->isVotedBy($this->user);
     }
 
     public function vote()
@@ -34,14 +36,14 @@ class IdeaShow extends Component
             return redirect(route('login'));
         }
 
-        $this->idea->vote($this->user);
+        $this->getVoter()->vote($this->user);
         $this->isVoted = true;
         $this->votesCount += 1;
     }
 
     public function unvote()
     {
-        $this->idea->unvote($this->user);
+        $this->getVoter()->unvote($this->user);
         $this->isVoted = false;
         $this->votesCount -= 1;
     }
@@ -49,5 +51,10 @@ class IdeaShow extends Component
     public function render()
     {
         return view('livewire.idea-show');
+    }
+
+    private function getVoter(): Voter
+    {
+        return new Voter($this->idea);
     }
 }

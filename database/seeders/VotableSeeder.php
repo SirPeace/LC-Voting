@@ -4,10 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Idea;
 use App\Models\User;
-use App\Models\Vote;
+use App\Models\Votable;
 use Illuminate\Database\Seeder;
 
-class VoteSeeder extends Seeder
+class VotableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,9 +21,10 @@ class VoteSeeder extends Seeder
 
         // Make every user vote for a random idea
         foreach (range(1, $usersCount) as $user_id) {
-            Vote::factory()->create([
+            Votable::factory()->create([
                 'user_id' => $user_id,
-                'idea_id' => mt_rand(1, $ideasCount),
+                'votable_id' => mt_rand(1, $ideasCount),
+                'votable_type' => Idea::class,
             ]);
         }
     }

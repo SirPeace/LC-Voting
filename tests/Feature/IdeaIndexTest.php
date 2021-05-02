@@ -2,7 +2,7 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use App\Models\Vote;
+use App\Models\Votable;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,13 +30,15 @@ test("index_route_displays_index_livewire_component", function () {
 
 
 test("ideas_index_component_receives_votes_count_correctly", function () {
-    Vote::factory()->createMany([
+    Votable::factory()->createMany([
         [
-            "idea_id" => $this->idea->id,
+            "votable_id" => $this->idea->id,
+            "votable_type" => Idea::class,
             "user_id" => User::factory()->create()->id,
         ],
         [
-            "idea_id" => $this->idea->id,
+            "votable_id" => $this->idea->id,
+            "votable_type" => Idea::class,
             "user_id" => User::factory()->create()->id,
         ]
     ]);
@@ -45,19 +47,21 @@ test("ideas_index_component_receives_votes_count_correctly", function () {
         ->assertViewHas('ideas', function ($ideas) {
             $this->assertEquals($ideas->first()->id, $this->idea->id);
 
-            return intval($ideas->first()->votes_count) === 2;
+            return $ideas->first()->votes_count == 2;
         });
 });
 
 
 test("idea_index_component_receives_correct_votes_count", function () {
-    Vote::factory()->createMany([
+    Votable::factory()->createMany([
         [
-            "idea_id" => $this->idea->id,
+            "votable_id" => $this->idea->id,
+            "votable_type" => Idea::class,
             "user_id" => User::factory()->create()->id,
         ],
         [
-            "idea_id" => $this->idea->id,
+            "votable_id" => $this->idea->id,
+            "votable_type" => Idea::class,
             "user_id" => User::factory()->create()->id,
         ]
     ]);
@@ -70,8 +74,8 @@ test("idea_index_component_receives_correct_votes_count", function () {
 test("user_can_see_if_the_idea_was_voted_by_him", function () {
     $loggedInUser = User::factory()->create();
 
-    Vote::factory()->createOne([
-        "idea_id" => $this->idea->id,
+    Votable::factory()->createOne([
+        "votable_id" => $this->idea->id,
         "user_id" => $loggedInUser->id,
     ]);
 
@@ -89,9 +93,9 @@ test("user_can_see_if_the_idea_was_voted_by_him", function () {
 test("logged_in_user_can_vote", function () {
     $loggedInUser = User::factory()->create();
 
-    $this->assertDatabaseMissing('votes', [
-        'idea_id' => $this->idea->id,
+    $this->assertDatabaseMissing('votables', [
         'user_id' => $loggedInUser->id,
+        'votable_id' => $this->idea->id,
     ]);
 
     Livewire::actingAs($loggedInUser)
@@ -104,9 +108,9 @@ test("logged_in_user_can_vote", function () {
         ->assertSet('votesCount', 1)
         ->assertSee('Voted');
 
-    $this->assertDatabaseHas('votes', [
+    $this->assertDatabaseHas('votables', [
         'user_id' => $loggedInUser->id,
-        'idea_id' => $this->idea->id,
+        'votable_id' => $this->idea->id,
     ]);
 });
 

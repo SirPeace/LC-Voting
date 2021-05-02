@@ -2,7 +2,7 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use App\Models\Vote;
+use App\Models\Votable;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,22 +39,26 @@ beforeEach(function () {
     ]);
 
     // 2 votes for first, 1 vote for second
-    Vote::factory()->createMany([
+    Votable::factory()->createMany([
         [
             'user_id' => $this->userA->id,
-            'idea_id' => 1,
+            'votable_type' => Idea::class,
+            'votable_id' => 1,
         ],
         [
             'user_id' => $this->userB->id,
-            'idea_id' => 1,
+            'votable_type' => Idea::class,
+            'votable_id' => 1,
         ],
         [
             'user_id' => $this->userB->id,
-            'idea_id' => 2,
+            'votable_type' => Idea::class,
+            'votable_id' => 2,
         ],
         [
             'user_id' => $this->userB->id,
-            'idea_id' => 3,
+            'votable_type' => Idea::class,
+            'votable_id' => 3,
         ],
     ]);
 });

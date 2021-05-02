@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Status;
-use App\Models\Vote;
+use App\Models\Votable;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -75,9 +75,9 @@ class IdeasIndex extends Component
                 fn ($query) => $query->where('title', 'ilike', "%$this->search%")
             )
             ->addSelect([ // check if user voted for idea (n+1)
-                'voted_by_user' => Vote::select('id')
+                'voted_by_user' => Votable::select('id')
                     ->where('user_id', auth()->id())
-                    ->whereColumn('idea_id', 'ideas.id')
+                    ->whereColumn('votable_id', 'ideas.id')
             ])
             ->withCount('votes') // get votes count (n+1)
             ->latest('id')
