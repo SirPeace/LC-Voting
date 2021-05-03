@@ -16,7 +16,7 @@ class Voter
     /**
      * Check if the specified user voted for this votable entity
      *
-     * @param User|null $user
+     * @param App\Models\User|null $user
      * @return boolean
      */
     public function isVotedBy(?User $user): bool
@@ -34,7 +34,7 @@ class Voter
     /**
      * Vote for this votable entity as the specified user
      *
-     * @param User|null $user
+     * @param App\Models\User|null $user
      * @return void
      */
     public function vote(?User $user): void
@@ -47,7 +47,7 @@ class Voter
     /**
      * Unvote this votable entity as the specified user
      *
-     * @param User|null $user
+     * @param App\Models\User|null $user
      * @return void
      */
     public function unvote(?User $user): void
