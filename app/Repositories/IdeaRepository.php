@@ -17,7 +17,7 @@ class IdeaRepository
      * @param string $filter Filter option query string
      * @param string $search Search value query string
      * @param string $status Status name query string
-     * @param string $orderBy Show latest posts according to this field
+     * @param string $orderBy Sort posts in descending order by this field
      * @return Illuminate\Pagination\Paginator
      */
     static public function getIdeasForIndex(
