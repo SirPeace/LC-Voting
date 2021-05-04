@@ -39,10 +39,10 @@ class IdeasIndex extends Component
     public function render()
     {
         $ideas = IdeaRepository::getIdeasForIndex(
-            $this->category,
-            $this->filter,
-            $this->search,
-            $this->status,
+            category: $this->category,
+            filter: $this->filter,
+            search: $this->search,
+            status: $this->status,
         );
 
         $categories = Category::all()->toBase();
