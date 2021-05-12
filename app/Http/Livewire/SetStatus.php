@@ -2,10 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Mail\IdeaStatusChange;
+use App\Jobs\NotifyVoters;
 use App\Models\Idea;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class SetStatus extends Component
@@ -32,24 +31,12 @@ class SetStatus extends Component
         $this->emit('statusUpdate');
 
         if ($this->notifyAllVoters) {
-            $this->notifyAllVoters();
+            NotifyVoters::dispatch($this->idea);
         }
     }
 
     public function render()
     {
         return view('livewire.set-status');
-    }
-
-    private function notifyAllVoters(): void
-    {
-        $this->idea->votes()
-            ->select('name', 'email')
-            ->chunk(100, function ($voters) {
-                foreach ($voters as $voter) {
-                    Mail::to($voter->email)
-                        ->queue(new IdeaStatusChange($this->idea));
-                }
-            });
     }
 }
