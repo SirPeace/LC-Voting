@@ -20,10 +20,5 @@
             "username": "postgres",
             "password": "HollywoodUndead24/7"
         }
-    ],
-    "editor.tokenColorCustomizations": {
-        "[Atom One Light]": {
-            "variables": "#000"
-        }
-    }
+    ]
 }
