@@ -1,15 +1,15 @@
 <form wire:submit.prevent="createIdea" action="#" method="POST" class="space-y-4 px-4 my-4">
     <div>
         <input wire:model.defer="title" type="text" class="w-full text-sm bg-gray-100 border-none rounded-xl placeholder-gray-900 px-4 py-2 transition duration-150 ease-in" placeholder="Your Idea" required>
-        @error('title')
-            <p class="text-red text-xs mt-1">{{ $message }}</p>
-        @enderror
+    @error('title')
+        <p class="text-red text-xs mt-1">{{ $message }}</p>
+    @enderror
     </div>
     <div>
         <select wire:model.defer="category" name="category_add" id="category_add" class="w-full bg-gray-100 text-sm rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->alias }}</option>
-            @endforeach
+        @foreach ($categories as $category)
+            <option value="{{ $category->id }}">{{ $category->alias }}</option>
+        @endforeach
         </select>
     </div>
     @error('category')
@@ -17,9 +17,9 @@
     @enderror
     <div>
         <textarea wire:model.defer="description" name="idea" id="idea" cols="30" rows="4" class="w-full bg-gray-100 rounded-xl border-none placeholder-gray-900 text-sm px-4 py-2 transition duration-150 ease-in" placeholder="Describe your idea" required></textarea>
-        @error('description')
-            <p class="text-red text-xs mt-1">{{ $message }}</p>
-        @enderror
+    @error('description')
+        <p class="text-red text-xs mt-1">{{ $message }}</p>
+    @enderror
     </div>
     <div class="flex items-center justify-between space-x-3">
         <button
@@ -39,18 +39,18 @@
         </button>
     </div>
 
-    @if (session('success_message'))
-        <div
-            x-data="{ isVisible: true }"
-            x-init="
-                setTimeout(() => {
-                    isVisible = false
-                }, 5000)
-            "
-            x-show.transition.duration.1000ms="isVisible"
-            class="text-green mt-4 text-center text-sm"
-        >
-            {{ session('success_message') }}
-        </div>
-    @endif
+@if (session('success_message'))
+    <div
+        x-data="{ isVisible: true }"
+        x-init="
+            setTimeout(() => {
+                isVisible = false
+            }, 5000)
+        "
+        x-show.transition.duration.1000ms="isVisible"
+        class="text-green mt-4 text-center text-sm"
+    >
+        {{ session('success_message') }}
+    </div>
+@endif
 </form>

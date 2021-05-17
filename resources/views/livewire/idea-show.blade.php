@@ -32,21 +32,21 @@
                                 <div class="text-xxs font-semibold leading-none text-gray-400">Votes</div>
                             </div>
 
-                            @if ($isVoted)
-                                <button
-                                    class="w-20 bg-blue hover:bg-blue-hover text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
-                                    wire:click="unvote"
-                                >
-                                    Voted
-                                </button>
-                            @else
-                                <button
-                                    class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
-                                    wire:click="vote"
-                                >
-                                    Vote
-                                </button>
-                            @endif
+                        @if ($isVoted)
+                            <button
+                                class="w-20 bg-blue hover:bg-blue-hover text-white font-bold text-xxs uppercase rounded-xl transition duration-150 ease-in px-4 py-3 -mx-5"
+                                wire:click="unvote"
+                            >
+                                Voted
+                            </button>
+                        @else
+                            <button
+                                class="w-20 bg-gray-200 border border-gray-200 font-bold text-xxs uppercase rounded-xl hover:border-gray-400 transition duration-150 ease-in px-4 py-3 -mx-5"
+                                wire:click="vote"
+                            >
+                                Vote
+                            </button>
+                        @endif
                         </div>
 
                         <div
@@ -68,6 +68,7 @@
                                     @click.away="isOpen = false"
                                     @keydown.escape.window="isOpen = false"
                                 >
+                                @can('update', $idea)
                                     <li>
                                         <a
                                             href="#"
@@ -78,6 +79,7 @@
                                             "
                                         >Edit idea</a>
                                     </li>
+                                @endcan
                                     <li><a href="#" class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">Mark as Spam</a></li>
                                     <li><a href="#" class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">Delete Post</a></li>
                                 </ul>
@@ -115,11 +117,11 @@
                     </form>
                 </div>
             </div>
-            @auth
-                @if (auth()->user()->isAdmin())
-                    <livewire:set-status :idea="$idea" />
-                @endif
-            @endauth
+    @auth
+        @if (auth()->user()->isAdmin())
+            <livewire:set-status :idea="$idea" />
+        @endif
+    @endauth
         </div>
 
         <div class="hidden md:flex items-center space-x-3">
@@ -128,23 +130,23 @@
                 <div class="text-gray-400 text-xs leading-none">Votes</div>
             </div>
 
-            @if ($isVoted)
-                <button
-                    wire:click="unvote"
-                    type="button"
-                    class="w-32 h-11 text-xs bg-blue hover:bg-blue-hover text-white border border-blue font-semibold uppercase rounded-xl  transition duration-150 ease-in px-6 py-3"
-                >
-                    Voted
-                </button>
-            @else
-                <button
-                    wire:click="vote"
-                    type="button"
-                    class="w-32 h-11 text-xs bg-gray-200 font-semibold uppercase rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
-                >
-                    Vote
-                </button>
-            @endif
+        @if ($isVoted)
+            <button
+                wire:click="unvote"
+                type="button"
+                class="w-32 h-11 text-xs bg-blue hover:bg-blue-hover text-white border border-blue font-semibold uppercase rounded-xl  transition duration-150 ease-in px-6 py-3"
+            >
+                Voted
+            </button>
+        @else
+            <button
+                wire:click="vote"
+                type="button"
+                class="w-32 h-11 text-xs bg-gray-200 font-semibold uppercase rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
+            >
+                Vote
+            </button>
+        @endif
         </div>
     </div> <!-- end buttons-container -->
 </div>
