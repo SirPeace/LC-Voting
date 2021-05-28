@@ -6,12 +6,15 @@ use App\Models\Idea;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Category;
+use App\Traits\ShouldAuthorize;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 
 class EditIdeaModal extends Component
 {
+    use ShouldAuthorize;
+
     public Idea $idea;
     public int $category_id;
     public string $title;
@@ -33,13 +36,9 @@ class EditIdeaModal extends Component
 
     public function updateIdea(): void
     {
-        // If user can't update idea abandon request
-        if (
-            auth()->guest() ||
-            optional(auth()->user())->cannot('update', $this->idea)
-        ) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize(
+            fn () => optional(auth()->user())->can('update', $this->idea)
+        );
 
         $this->validate();
 

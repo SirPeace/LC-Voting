@@ -49,7 +49,7 @@
             @enderror
           </div>
           <div>
-            <select wire:model.defer="category_id" name="category_add" id="category_add"
+            <select wire:model.defer="category_id" name="category_add"
                     class="w-full bg-gray-100 text-sm rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
               @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->alias }}</option>
@@ -60,7 +60,7 @@
             @enderror
           </div>
           <div>
-            <textarea wire:model.defer="description" name="idea" id="idea" cols="30" rows="10"
+            <textarea wire:model.defer="description" name="idea" cols="30" rows="10"
                       class="w-full bg-gray-100 rounded-xl border-none placeholder-gray-900 text-sm px-4 py-2 transition duration-150 ease-in"
                       placeholder="Describe your idea" required></textarea>
             @error('description')
