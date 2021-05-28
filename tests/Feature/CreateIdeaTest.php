@@ -51,7 +51,7 @@ test("form_does_not_create_new_records_if_validation_fails", function () {
         ->test("create-idea")
         ->set("title", "")
         ->set("description", "")
-        ->set("category", "")
+        ->set("category_id", "")
         ->call("createIdea");
 
     $ideasCountAfter = Idea::count();
@@ -74,7 +74,7 @@ test("form_shows_success_message_and_persists_database_record_if_validation_pass
         ->test("create-idea")
         ->set("title", $ideaTitle)
         ->set("description", $ideaDescription)
-        ->set("category", $ideaCategory)
+        ->set("category_id", $ideaCategory)
         ->call("createIdea")
         ->assertRedirect(route("idea.index"));
 
