@@ -2,10 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Jobs\NotifyVoters;
 use App\Models\Idea;
-use Illuminate\Http\Response;
+use App\Models\User;
 use Livewire\Component;
+use App\Jobs\NotifyVoters;
+use Illuminate\Http\Response;
 
 class SetStatus extends Component
 {
@@ -21,8 +22,9 @@ class SetStatus extends Component
 
     public function setStatusID()
     {
-        if (auth()->guest() || !auth()->user()?->isAdmin()) {
-            return Response::HTTP_FORBIDDEN;
+        // If user is not admin abondon request
+        if (auth()->guest() || !optional(auth()->user())->isAdmin()) {
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         $this->idea->status_id = $this->statusID;

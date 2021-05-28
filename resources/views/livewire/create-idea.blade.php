@@ -6,7 +6,7 @@
     @enderror
     </div>
     <div>
-        <select wire:model.defer="category" name="category_add" id="category_add" class="w-full bg-gray-100 text-sm rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
+        <select wire:model.defer="category_id" name="category_add" id="category_add" class="w-full bg-gray-100 text-sm rounded-xl border-none px-4 py-2 transition duration-150 ease-in">
         @foreach ($categories as $category)
             <option value="{{ $category->id }}">{{ $category->alias }}</option>
         @endforeach

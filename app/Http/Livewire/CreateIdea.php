@@ -11,12 +11,12 @@ use Livewire\Component;
 class CreateIdea extends Component
 {
     public $title;
-    public $category = 1;
+    public $category_id = 1;
     public $description;
 
     protected $rules = [
         'title' => 'required|min:10',
-        'category' => 'required|integer',
+        'category_id' => 'required|integer|exists:categories,id',
         'description' => 'required|min:10',
     ];
 
@@ -27,7 +27,7 @@ class CreateIdea extends Component
 
             $idea = Idea::create([
                 'user_id' => auth()->id(),
-                'category_id' => $this->category,
+                'category_id' => $this->category_id,
                 'status_id' => 1,
                 'title' => $this->title,
                 'description' => $this->description,
