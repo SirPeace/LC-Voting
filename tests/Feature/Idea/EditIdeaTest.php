@@ -55,8 +55,6 @@ test("livewire_component_form_validation_works", function () {
 
 
 test("authorized_user_can_edit_idea", function () {
-    (new CategorySeeder)->run();
-
     [$categoryOne, $categoryTwo] = Category::whereIn('id', [1, 2])->get();
 
     $user = User::factory()->create();
@@ -83,8 +81,6 @@ test("authorized_user_can_edit_idea", function () {
 
 
 test("authorized_user_can_not_edit_idea_after_one_hour", function () {
-    (new CategorySeeder)->run();
-
     [$categoryOne, $categoryTwo] = Category::whereIn('id', [1, 2])->get();
 
     $user = User::factory()->create();
