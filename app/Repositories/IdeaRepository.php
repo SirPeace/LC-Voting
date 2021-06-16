@@ -6,6 +6,7 @@ use App\Models\Idea;
 use App\Models\Status;
 use App\Models\Votable;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
 
 class IdeaRepository
@@ -20,7 +21,7 @@ class IdeaRepository
      * @param string $orderBy Sort posts in descending order by this field
      * @return Illuminate\Pagination\Paginator
      */
-    static public function getIdeasForIndex(
+    public static function getIdeasForIndex(
         string $category = '',
         string $filter = '',
         string $search = '',
@@ -28,25 +29,29 @@ class IdeaRepository
         string $orderBy = 'id'
     ): Paginator {
         $categories = Category::all()->toBase();
+        $user = auth()->user();
 
         $ideasPaginator = Idea::with('user', 'category', 'status') // eager-load relationships (n+1)
+            // Statuses
             ->when(
                 $status,
-                function ($query) use ($status) {
+                function (Builder $query) use ($status) {
                     $statuses = Status::pluck('id', 'name');
                     return $query->where('status_id', $statuses[$status]);
                 }
             )
+            // Categories
             ->when(
                 $category,
-                function ($query) use ($categories, $category) {
+                function (Builder $query) use ($categories, $category) {
                     $categories = $categories->pluck('id', 'name');
                     return $query->where('category_id', $categories[$category]);
                 }
             )
+            // Filters
             ->when(
                 $filter,
-                function ($query) use ($filter) {
+                function (Builder $query) use ($filter, $user) {
                     if ($filter === 'top_voted') {
                         return $query->orderByDesc('votes_count');
                     }
@@ -54,18 +59,29 @@ class IdeaRepository
                     if ($filter === 'user_ideas') {
                         return $query->where('user_id', auth()->id());
                     }
+
+                    if ($filter === 'spam' && optional($user)->isAdmin()) {
+                        return $query->has('spamMarks')
+                            ->withCount('spamMarks')
+                            ->latest('spam_marks_count');
+                    }
                 }
             )
+            // Search
             ->when(
                 mb_strlen($search) >= 3,
-                fn ($query) => $query->where('title', 'ilike', "%$search%")
+                fn (Builder $query) => (
+                    $query->where('title', 'ilike', "%$search%")
+                )
             )
-            ->addSelect([ // check if user voted for idea (n+1)
+            // Check if user voted for idea (n+1)
+            ->addSelect([
                 'voted_by_user' => Votable::select('id')
                     ->where('user_id', auth()->id())
                     ->whereColumn('votable_id', 'ideas.id')
             ])
-            ->withCount('votes') // get votes count (n+1)
+            // Add votes_count property (n+1)
+            ->withCount('votes')
             ->latest($orderBy)
             ->simplePaginate(Idea::PAGINATION_COUNT);
 

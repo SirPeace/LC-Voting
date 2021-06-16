@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Interfaces\IVotable;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Idea extends Model implements IVotable
 {
@@ -49,5 +51,42 @@ class Idea extends Model implements IVotable
     public function votes(): MorphToMany
     {
         return $this->morphToMany(User::class, 'votable');
+    }
+
+    public function spamMarks(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'idea_spam_marks');
+    }
+
+    public function spamMarksCount(): int
+    {
+        // return DB::table('idea_spam_marks')
+        //     ->where('idea_id', $this->id)
+        //     ->count();
+
+        return $this->spamMarks()->count();
+    }
+
+    public function markAsSpam(User $user): void
+    {
+        try {
+            // DB::table('idea_spam_marks')->insert([
+            //     'idea_id' => $this->id,
+            //     'user_id' => $user->id
+            // ]);
+
+            $this->spamMarks()->save($user);
+        } catch (\Exception $e) {
+            // User already marked idea as spam
+        }
+    }
+
+    public function removeSpamMarks(): void
+    {
+        // DB::table('idea_spam_marks')
+        //     ->where('idea_id', $this->id)
+        //     ->delete();
+
+        $this->spamMarks()->detach();
     }
 }
