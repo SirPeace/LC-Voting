@@ -8,6 +8,19 @@
 
     <livewire:idea-show :idea="$idea" />
 
+    <div x-data="{ isVisible: false }">
+        <button @click="
+                    isVisible = true
+                    setTimeout(() => {
+                        isVisible = false
+                    }, 5000)
+                ">
+            Show notification
+        </button>
+
+        <x-notification />
+    </div>
+
     <x-idea-modals :idea="$idea" />
 
     <div class="comments-container relative space-y-6 md:ml-22 pt-4 my-8 mt-1">
