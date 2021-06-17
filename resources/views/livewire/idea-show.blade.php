@@ -13,7 +13,7 @@
                 @admin
                 @if ($idea->spamMarksCount() > 0)
                     <div class="text-red-600 mt-3 line-clamp-3">
-                        Idea was marked as spam {{ $idea->spamMarksCount() }} times.
+                        Spam Reports: {{ $idea->spamMarksCount() }}
                     </div>
                 @endif
                 @endadmin

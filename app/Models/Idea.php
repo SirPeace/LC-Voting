@@ -60,21 +60,12 @@ class Idea extends Model implements IVotable
 
     public function spamMarksCount(): int
     {
-        // return DB::table('idea_spam_marks')
-        //     ->where('idea_id', $this->id)
-        //     ->count();
-
         return $this->spamMarks()->count();
     }
 
     public function markAsSpam(User $user): void
     {
         try {
-            // DB::table('idea_spam_marks')->insert([
-            //     'idea_id' => $this->id,
-            //     'user_id' => $user->id
-            // ]);
-
             $this->spamMarks()->save($user);
         } catch (\Exception $e) {
             // User already marked idea as spam
@@ -83,10 +74,6 @@ class Idea extends Model implements IVotable
 
     public function removeSpamMarks(): void
     {
-        // DB::table('idea_spam_marks')
-        //     ->where('idea_id', $this->id)
-        //     ->delete();
-
         $this->spamMarks()->detach();
     }
 }

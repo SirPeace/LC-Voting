@@ -11,7 +11,7 @@ class IdeaIndex extends Component
 {
     public Idea $idea;
     public ?User $user = null;
-    public int $votesCount;
+    public $votesCount = 0;
     public bool $isVoted;
 
     public function mount(Idea $idea)

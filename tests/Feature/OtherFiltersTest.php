@@ -2,11 +2,11 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use App\Models\Votable;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\StatusSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use App\Models\Votable;
+use Database\Seeders\StatusSeeder;
+use Database\Seeders\CategorySeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -141,5 +141,39 @@ test('no_filters_does_not_affect_ideas_list', function () {
         ->assertViewHas('ideas', function ($ideas) {
             return $ideas->count() === 3
                 && $ideas->first()->title == 'Last idea';
+        });
+});
+
+test('spam_ideas_filter_works', function () {
+    $admin = User::factory()->create([
+        'email' => 'roman.khabibulin12@gmail.com'
+    ]);
+
+    $ideaOne = Idea::factory()->create([
+        'title' => 'Idea One',
+    ]);
+    $ideaOne->markAsSpam(User::factory()->create());
+
+    $ideaTwo = Idea::factory()->create([
+        'title' => 'Idea Two',
+    ]);
+    $ideaTwo->markAsSpam(User::factory()->create());
+    $ideaTwo->markAsSpam(User::factory()->create());
+
+    $ideaThree = Idea::factory()->create([
+        'title' => 'Idea Three',
+    ]);
+    $ideaThree->markAsSpam(User::factory()->create());
+    $ideaThree->markAsSpam(User::factory()->create());
+    $ideaThree->markAsSpam(User::factory()->create());
+
+    Livewire::actingAs($admin)
+        ->test('ideas-index')
+        ->set('filter', 'spam')
+        ->assertViewHas('ideas', function ($ideas) {
+            return $ideas->count() === 3
+                && $ideas->first()->title === 'Idea Three'
+                && $ideas->get(1)->title === 'Idea Two'
+                && $ideas->get(2)->title === 'Idea One';
         });
 });
