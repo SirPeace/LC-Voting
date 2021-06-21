@@ -1,22 +1,20 @@
 @props(['message', 'event' => null, 'flash' => false])
 
-<div x-data="{ isVisible: false }"
-     x-init="
-        window.livewire.on('{{ $event }}', () => {
-            isVisible = true
-
+<div x-data="{
+        isVisible: false,
+        showNotification() {
+            this.isVisible = true
             setTimeout(() => {
-                isVisible = false
-            }, 5000)
-        })
-
-        if ({{ $flash ?: 0 }}) {
-            isVisible = true
-
-            setTimeout(() => {
-                isVisible = false
+                this.isVisible = false
             }, 5000)
         }
+     }"
+     x-init="
+        @if ($flash)
+            $nextTick(() => showNotification())
+        @else
+            Livewire.on('{{ $event }}', () => showNotification())
+        @endif
      ">
     <div x-show="isVisible"
          x-cloak
