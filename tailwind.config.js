@@ -47,6 +47,15 @@ module.exports = {
                 xxs: ["0.625rem", { lineHeight: "1rem" }],
             },
         },
+
+        borderWidth: {
+            DEFAULT: '1px',
+            '0': '0',
+            '2': '2px',
+            '3': '3px',
+            '4': '4px',
+            '8': '8px',
+        }
     },
 
     variants: {
