@@ -60,7 +60,7 @@ test("form_does_not_create_new_records_if_validation_fails", function () {
 });
 
 
-test("form_shows_success_message_and_persists_database_record_if_validation_passes", function () {
+test("success_message_is_shown_and_database_record_is_persisted_if_validation_passes", function () {
     (new StatusSeeder)->run();
     (new CategorySeeder)->run();
 
@@ -89,7 +89,7 @@ test("form_shows_success_message_and_persists_database_record_if_validation_pass
     ]);
 
     $this->get(route("idea.index"))
-        ->assertSee("The idea was successfuly created!")
+        ->assertSee("Idea was successfully created")
         ->assertSee($ideaTitle)
         ->assertSee($ideaDescription);
 });
