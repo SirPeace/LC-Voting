@@ -20,6 +20,8 @@ class DeleteIdeaModal extends Component
 
         $this->idea->delete();
 
+        session()->flash('ideaDelete', true);
+
         return redirect()->route('idea.index');
     }
 

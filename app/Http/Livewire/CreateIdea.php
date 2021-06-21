@@ -39,7 +39,7 @@ class CreateIdea extends Component
                 'votable_type' => Idea::class,
             ]);
 
-            session()->flash('success_message', 'The idea was successfuly created!');
+            session()->flash('ideaCreate', true);
 
             $this->reset();
 

@@ -8,18 +8,9 @@
 
     <livewire:idea-show :idea="$idea" />
 
-    <div x-data="{ isVisible: false }">
-        <button @click="
-                    isVisible = true
-                    setTimeout(() => {
-                        isVisible = false
-                    }, 5000)
-                ">
-            Show notification
-        </button>
-
-        <x-notification />
-    </div>
+    <x-notification event="ideaUpdate" message="The idea was successfully updated" />
+    <x-notification event="ideaWasMarkedAsSpam" message="Idea was marked as spam" />
+    <x-notification event="ideaWasMarkedAsNotSpam" message="Spam marks were removed" />
 
     <x-idea-modals :idea="$idea" />
 
