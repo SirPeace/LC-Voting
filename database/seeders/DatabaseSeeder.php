@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         (new StatusSeeder)->run();
         (new IdeaSeeder)->run();
         (new VotableSeeder)->run();
+        (new IdeaCommentSeeder)->run();
     }
 }

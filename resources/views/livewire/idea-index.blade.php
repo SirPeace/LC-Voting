@@ -48,9 +48,9 @@
                     <a href="{{ route('idea.show', $idea) }}" class="idea-link hover:underline">{{ $idea->title }}</a>
                 </h4>
                 @admin
-                    @if ($idea->spamMarksCount() > 0)
+                    @if ($idea->spamMarks()->count() > 0)
                         <div class="text-red-600 mt-3 line-clamp-3">
-                            Spam Reports: {{ $idea->spamMarksCount() }}
+                            Spam Reports: {{ $idea->spamMarks()->count() }}
                         </div>
                     @endif
                 @endadmin

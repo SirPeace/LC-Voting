@@ -6,6 +6,7 @@ use App\Interfaces\IVotable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -58,9 +59,9 @@ class Idea extends Model implements IVotable
         return $this->belongsToMany(User::class, 'idea_spam_marks');
     }
 
-    public function spamMarksCount(): int
+    public function comments(): HasMany
     {
-        return $this->spamMarks()->count();
+        return $this->hasMany(IdeaComment::class);
     }
 
     public function markAsSpam(User $user): void
