@@ -23,7 +23,7 @@ class MarkIdeaAsSpamModal extends Component
 
         $this->idea->markAsSpam(auth()->user());
 
-        $this->emit('ideaWasMarkedAsSpam');
+        $this->emit('ideaWasMarkedAsSpam', 'Idea was marked as spam');
     }
 
     public function render()

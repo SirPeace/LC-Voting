@@ -50,7 +50,7 @@ class EditIdeaModal extends Component
             ]);
 
             if ($updateStatus === true) {
-                $this->emit("ideaUpdate");
+                $this->emit('ideaUpdate', 'The idea was successfully updated');
             }
         } catch (QueryException $e) {
             Log::error($e->errorInfo);

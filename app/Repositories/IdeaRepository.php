@@ -82,6 +82,7 @@ class IdeaRepository
             ])
             // Add votes_count property (n+1)
             ->withCount('votes')
+            ->withCount('comments')
             ->latest($orderBy)
             ->simplePaginate(Idea::PAGINATION_COUNT);
 

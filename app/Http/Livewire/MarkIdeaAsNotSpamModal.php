@@ -23,7 +23,7 @@ class MarkIdeaAsNotSpamModal extends Component
 
         $this->idea->removeSpamMarks();
 
-        $this->emit('ideaWasMarkedAsNotSpam');
+        $this->emit('ideaWasMarkedAsNotSpam', 'Spam marks were removed');
     }
 
     public function render()

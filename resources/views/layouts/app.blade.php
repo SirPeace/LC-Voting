@@ -117,6 +117,14 @@
                 </div>
             </div>
         </main>
+
+        <x-notification event="ideaUpdate" />
+        <x-notification event="ideaWasMarkedAsSpam" />
+        <x-notification event="ideaWasMarkedAsNotSpam" />
+        <x-notification event="ideaCommentCreated" />
+        <x-notification :flash="session('ideaDelete')" />
+        <x-notification :flash="session('ideaCreate')" />
+
         <livewire:scripts />
     </body>
 </html>

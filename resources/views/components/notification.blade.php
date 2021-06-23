@@ -1,9 +1,13 @@
-@props(['message', 'event' => null, 'flash' => false])
+@props(['event' => null, 'flash' => null])
 
 <div x-data="{
         isVisible: false,
-        showNotification() {
+        message: null,
+
+        showNotification(message) {
             this.isVisible = true
+            this.message = message
+
             setTimeout(() => {
                 this.isVisible = false
             }, 5000)
@@ -11,9 +15,9 @@
      }"
      x-init="
         @if ($flash)
-            $nextTick(() => showNotification())
+            $nextTick(() => showNotification('{{ $flash }}'))
         @else
-            Livewire.on('{{ $event }}', () => showNotification())
+            Livewire.on('{{ $event }}', message => showNotification(message))
         @endif
      ">
     <div x-show="isVisible"
@@ -31,7 +35,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span class="font-semibold sm:text-base text-gray-700">{{ $message }}</span>
+            <span class="font-semibold sm:text-base text-gray-700" x-text="message"></span>
         </div>
 
         <button @click="isVisible = false">

@@ -8,10 +8,6 @@
 
     <livewire:idea-show :idea="$idea" />
 
-    <x-notification event="ideaUpdate" message="The idea was successfully updated" />
-    <x-notification event="ideaWasMarkedAsSpam" message="Idea was marked as spam" />
-    <x-notification event="ideaWasMarkedAsNotSpam" message="Spam marks were removed" />
-
     <x-idea-modals :idea="$idea" />
 
     <livewire:idea-comments :idea="$idea" />
