@@ -10,6 +10,7 @@ class IdeaComment extends Model
 {
     use HasFactory;
 
+    protected $perPage = 10;
     protected $fillable = [
         'idea_id',
         'user_id',

@@ -3,15 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\Models\Idea;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\IdeaComment;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class IdeaComments extends Component
 {
-    /**
-     * @var \Illuminate\Database\Eloquent\Collection<\App\Models\IdeaComment>
-     */
-    public Collection $comments;
+    use WithPagination;
+
     public Idea $idea;
 
     protected $listeners = ['ideaCommentCreated'];
@@ -19,17 +18,27 @@ class IdeaComments extends Component
     public function ideaCommentCreated()
     {
         $this->idea->refresh();
-        $this->comments = $this->idea->comments;
+
+        $lastPaginationPageUrl = $this->idea
+            ->comments()
+            ->paginate()
+            ->lastPage();
+
+        $this->gotoPage($lastPaginationPageUrl);
     }
 
     public function mount(Idea $idea)
     {
         $this->idea = $idea;
-        $this->comments = $idea->comments;
     }
 
     public function render()
     {
-        return view('livewire.idea-comments');
+        $comments = IdeaComment::with('user')
+            ->where('idea_id', $this->idea->id)
+            ->paginate()
+            ->withQueryString();
+
+        return view('livewire.idea-comments', compact('comments'));
     }
 }
