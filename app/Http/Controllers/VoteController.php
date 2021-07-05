@@ -41,10 +41,17 @@ class VotableController extends Controller
     /**
      * Display the specified resource.
      *
+<<<<<<< HEAD
      * @param  \App\Models\Votable  $vote
      * @return \Illuminate\Http\Response
      */
     public function show(Votable $vote)
+=======
+     * @param  \App\Models\Vote  $vote
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Vote $vote)
+>>>>>>> master
     {
         //
     }
@@ -52,10 +59,17 @@ class VotableController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+<<<<<<< HEAD
      * @param  \App\Models\Votable  $vote
      * @return \Illuminate\Http\Response
      */
     public function edit(Votable $vote)
+=======
+     * @param  \App\Models\Vote  $vote
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Vote $vote)
+>>>>>>> master
     {
         //
     }
@@ -64,10 +78,17 @@ class VotableController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+<<<<<<< HEAD
      * @param  \App\Models\Votable  $vote
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Votable $vote)
+=======
+     * @param  \App\Models\Vote  $vote
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Vote $vote)
+>>>>>>> master
     {
         //
     }
@@ -75,10 +96,17 @@ class VotableController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+<<<<<<< HEAD
      * @param  \App\Models\Votable  $vote
      * @return \Illuminate\Http\Response
      */
     public function destroy(Votable $vote)
+=======
+     * @param  \App\Models\Vote  $vote
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Vote $vote)
+>>>>>>> master
     {
         //
     }

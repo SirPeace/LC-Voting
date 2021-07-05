@@ -85,4 +85,13 @@ class User extends Authenticatable
             'roman.khabibulin12@gmail.com',
         ]);
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->email, [
+            'jeffrey@laracasts.com',
+            'andre_madarang@hotmail.com',
+            'adrian@laracasts.com,'
+        ]);
+    }
 }
