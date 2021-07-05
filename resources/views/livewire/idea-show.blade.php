@@ -145,7 +145,7 @@
             <livewire:create-idea-comment :idea="$idea" />
 
             @admin
-            <livewire:set-status :idea="$idea" />
+                <livewire:set-status :idea="$idea" />
             @endadmin
         </div>
 
