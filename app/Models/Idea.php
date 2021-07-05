@@ -16,7 +16,8 @@ class Idea extends Model implements IVotable
 {
     use HasFactory, Sluggable;
 
-    protected $perPage = 15;
+    const PAGINATION_COUNT = 10;
+
     protected $guarded = [];
 
     /**

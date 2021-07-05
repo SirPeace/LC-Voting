@@ -67,19 +67,23 @@ test("single_idea_shows_correctly_on_the_show_page", function () {
 });
 
 test("ideas_pagination_works", function () {
-    $ideaOne = Idea::factory()->create();
+    Idea::factory(Idea::PAGINATION_COUNT - 2)->create([
+        'user_id' => $this->user->id,
+    ]);
 
-    Idea::factory($ideaOne->getPerPage())->create();
+    $ideaLast = Idea::factory()->create([
+        'title' => 'My Last Idea',
+        'description' => 'Description of my last idea',
+        'user_id' => $this->user->id,
+    ]);
 
-    $response = $this->get('/');
+    $this->get(route('idea.index'))
+        ->assertSee($ideaLast->title)
+        ->assertDontSee($this->ideaOne->title);
 
-    $response->assertSee(Idea::find(Idea::count())->title);
-    $response->assertDontSee($ideaOne->title);
-
-    $response = $this->get('/?page=2');
-
-    $response->assertDontSee(Idea::find(Idea::count())->title);
-    $response->assertSee($ideaOne->title);
+    $this->get(route('idea.index', ['page' => 2]))
+        ->assertSee($this->ideaOne->title)
+        ->assertDontSee($ideaLast->title);
 });
 
 test("same_idea_title_different_slugs", function () {
