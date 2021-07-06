@@ -61,7 +61,7 @@ class Idea extends Model implements IVotable
 
     public function comments(): HasMany
     {
-        return $this->hasMany(IdeaComment::class);
+        return $this->hasMany(Comment::class);
     }
 
     public function markAsSpam(User $user): void

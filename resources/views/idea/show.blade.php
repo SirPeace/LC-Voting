@@ -10,5 +10,5 @@
 
     <x-idea-modals :idea="$idea" />
 
-    <livewire:idea-comments :idea="$idea" />
+    <livewire:comments :idea="$idea" />
 </x-app-layout>

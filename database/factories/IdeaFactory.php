@@ -26,8 +26,8 @@ class IdeaFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'category_id' => Category::factory(),
-            'status_id' => Status::factory(),
+            'category_id' => mt_rand(1, Category::count()),
+            'status_id' => mt_rand(1, Status::count()),
             'title' => ucwords($this->faker->words(4, true)),
             'description' => $this->faker->paragraph(5),
         ];

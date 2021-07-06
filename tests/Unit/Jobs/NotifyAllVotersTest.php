@@ -2,66 +2,54 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Jobs\NotifyAllVoters;
+use App\Jobs\NotifyVoters;
+use App\Mail\IdeaStatusChange;
 use App\Mail\IdeaStatusUpdatedMailable;
-use App\Models\Category;
 use App\Models\Idea;
-use App\Models\Status;
 use App\Models\User;
-use App\Models\Vote;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
-class NotifyAllVotersTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
+uses(TestCase::class);
 
-    /** @test */
-    public function it_sends_an_email_to_all_voters()
-    {
-        $user = User::factory()->create([
-            'email' => 'andre_madarang@hotmail.com',
-        ]);
+beforeEach(function () {
+    (new StatusSeeder)->run();
+    (new CategorySeeder)->run();
+});
 
-        $userB = User::factory()->create([
-            'email' => 'user@user.com',
-        ]);
+test('it_sends_an_email_to_all_voters', function () {
+    $user = User::factory()->create([
+        'email' => 'andre_madarang@hotmail.com',
+    ]);
 
-        $categoryOne = Category::factory()->create(['name' => 'Category 1']);
+    $userB = User::factory()->create([
+        'email' => 'user@user.com',
+    ]);
 
-        $statusConsidering = Status::factory()->create(['id' => 2, 'name' => 'Considering']);
+    $idea = Idea::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'My First Idea',
+        'description' => 'Description for my first idea',
+    ]);
 
-        $idea = Idea::factory()->create([
-            'user_id' => $user->id,
-            'category_id' => $categoryOne->id,
-            'status_id' => $statusConsidering->id,
-            'title' => 'My First Idea',
-            'description' => 'Description for my first idea',
-        ]);
+    $idea->votes()->save($user);
+    $idea->votes()->save($userB);
 
-        Vote::create([
-            'idea_id' => $idea->id,
-            'user_id' => $user->id,
-        ]);
+    Mail::fake();
 
-        Vote::create([
-            'idea_id' => $idea->id,
-            'user_id' => $userB->id,
-        ]);
+    NotifyVoters::dispatch($idea);
 
-        Mail::fake();
+    Mail::assertQueued(IdeaStatusChange::class, function ($mail) {
+        return $mail->hasTo('andre_madarang@hotmail.com')
+            && $mail->build()->subject === 'An idea you voted for changed the status';
+    });
 
-        NotifyAllVoters::dispatch($idea);
-
-        Mail::assertQueued(IdeaStatusUpdatedMailable::class, function ($mail) {
-            return $mail->hasTo('andre_madarang@hotmail.com')
-                && $mail->build()->subject === 'An idea you voted for has a new status';
-        });
-
-        Mail::assertQueued(IdeaStatusUpdatedMailable::class, function ($mail) {
-            return $mail->hasTo('user@user.com')
-                && $mail->build()->subject === 'An idea you voted for has a new status';
-        });
-    }
-}
+    Mail::assertQueued(IdeaStatusChange::class, function ($mail) {
+        return $mail->hasTo('user@user.com')
+            && $mail->build()->subject === 'An idea you voted for changed the status';
+    });
+});

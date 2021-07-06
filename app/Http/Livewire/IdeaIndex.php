@@ -44,12 +44,9 @@ class IdeaIndex extends Component
     {
         return view('livewire.idea-index');
     }
-<<<<<<< HEAD
 
     private function getVoter(): Voter
     {
         return new Voter($this->idea);
     }
-=======
->>>>>>> master
 }

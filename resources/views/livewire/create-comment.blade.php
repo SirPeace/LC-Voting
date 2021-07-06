@@ -9,7 +9,7 @@
 
             if (
                 message.updateQueue[0].payload.event === 'ideaCommentCreated' &&
-                message.component.fingerprint.name === 'idea-comments'
+                message.component.fingerprint.name === 'comments'
             ) {
                 const lastComment = document.querySelector('.comment-container:last-child')
                 lastComment.scrollIntoView({ behavior: 'smooth'})
@@ -67,7 +67,7 @@
             </form>
         @else
             <div class="my-4 text-center px-4">
-                <p class="mb-5">Only authenticated users can leave comments</p>
+                <p class="mb-5">Please login or create an account to post a comment</p>
 
                 <div class="sm:flex sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
                     <a

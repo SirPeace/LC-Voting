@@ -15,13 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(100)->create([
-            "password" => Hash::make("password"),
-        ]);
-
         User::factory()->create([
-            "name" => "Roman Khabibulin",
-            "email" => "roman.khabibulin12@gmail.com",
+            "name" => "Big Brother",
+            "email" => "admin@mail.com",
             "password" => Hash::make("admin"),
         ]);
 
@@ -29,6 +25,6 @@ class DatabaseSeeder extends Seeder
         (new StatusSeeder)->run();
         (new IdeaSeeder)->run();
         (new VotableSeeder)->run();
-        (new IdeaCommentSeeder)->run();
+        (new CommentSeeder)->run();
     }
 }

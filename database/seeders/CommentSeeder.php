@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Idea;
-use App\Models\IdeaComment;
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
-class IdeaCommentSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class IdeaCommentSeeder extends Seeder
     public function run()
     {
         foreach (Idea::all() as $idea) {
-            IdeaComment::factory(3)->create(["idea_id" => $idea->id]);
+            Comment::factory(3)->create(["idea_id" => $idea->id]);
         }
     }
 }

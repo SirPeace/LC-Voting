@@ -1,23 +1,31 @@
 <?php
 
-use App\Http\Livewire\CreateIdeaComment;
+use App\Http\Livewire\CreateComment;
 use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
-use App\Models\IdeaComment;
+use App\Models\Comment;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 
+beforeEach(function () {
+    (new CategorySeeder)->run();
+    (new StatusSeeder)->run();
+});
+
+
 // ! Does not work
-// test("create-idea-comment_livewire_component_renders", function ()
+// test("create-comment_livewire_component_renders", function ()
 // {
 //     $idea = Idea::factory()->create();
 
 //     $response = $this->get(route('idea.show', $idea));
 
-//     $response->assertSeeLivewire('create-idea-comment');
+//     $response->assertSeeLivewire('create-comment');
 // });
 
 
@@ -47,7 +55,7 @@ test("add_comment_form_validation_works", function ()
     $idea = Idea::factory()->create();
 
     Livewire::actingAs($user)
-        ->test(CreateIdeaComment::class, [
+        ->test(CreateComment::class, [
             'idea' => $idea,
         ])
         ->set('comment', '')
@@ -65,13 +73,13 @@ test("add_comment_form_works", function ()
     $idea = Idea::factory()->create();
 
     Livewire::actingAs($user)
-        ->test(CreateIdeaComment::class, [
+        ->test(CreateComment::class, [
             'idea' => $idea,
         ])
         ->set('comment', 'This is my first comment')
         ->call('addComment')
         ->assertEmitted('ideaCommentCreated');
 
-    $this->assertEquals(1, IdeaComment::count());
+    $this->assertEquals(1, Comment::count());
     $this->assertEquals('This is my first comment', $idea->comments->first()->body);
 });

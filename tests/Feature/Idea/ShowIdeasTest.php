@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Idea;
 
 use App\Models\Category;
 use App\Models\Idea;
@@ -98,4 +98,40 @@ test("same_idea_title_different_slugs", function () {
 
     $this->get(route('idea.show', $newIdea))->assertSuccessful();
     $this->assertTrue(request()->path() === 'ideas/my-first-idea-1');
+});
+
+
+test('in_app_back_button_works_when_index_page_visited_first', function () {
+    $user = User::factory()->create();
+
+    $ideaOne = Idea::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'My First Idea',
+        'description' => 'Description of my first idea',
+    ]);
+
+
+    $response = $this->get('/?category=Category%202&status=Considering');
+    $response = $this->get(route('idea.show', $ideaOne));
+
+    $this->assertStringContainsString(
+        '/?category=Category%202&status=Considering',
+        $response['backURL']
+    );
+});
+
+
+test('in_app_back_button_works_when_show_page_only_page_visited', function ()
+{
+    $user = User::factory()->create();
+
+    $ideaOne = Idea::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'My First Idea',
+        'description' => 'Description of my first idea',
+    ]);
+
+    $response = $this->get(route('idea.show', $ideaOne));
+
+    $this->assertEquals(route('idea.index'), $response['backURL']);
 });

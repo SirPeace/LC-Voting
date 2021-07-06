@@ -142,7 +142,7 @@
     </div> <!-- end idea-container -->
     <div class="buttons-container flex items-center justify-between mt-6">
         <div class="w-full md:w-auto flex flex-col md:flex-row items-center md:space-x-4 md:ml-6">
-            <livewire:create-idea-comment :idea="$idea" />
+            <livewire:create-comment :idea="$idea" />
 
             @admin
                 <livewire:set-status :idea="$idea" />

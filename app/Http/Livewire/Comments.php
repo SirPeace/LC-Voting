@@ -6,10 +6,10 @@ use App\Models\Idea;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
-class IdeaComments extends Component
+class Comments extends Component
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Collection<\App\Models\IdeaComment>
+     * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Comment>
      */
     public Collection $comments;
     public Idea $idea;
@@ -30,6 +30,6 @@ class IdeaComments extends Component
 
     public function render()
     {
-        return view('livewire.idea-comments');
+        return view('livewire.comments');
     }
 }

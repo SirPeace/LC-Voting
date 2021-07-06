@@ -4,10 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Idea;
 use Livewire\Component;
-use App\Models\IdeaComment;
+use App\Models\Comment;
 use Illuminate\Http\Response;
 
-class CreateIdeaComment extends Component
+class CreateComment extends Component
 {
     public Idea $idea;
     public string $comment = '';
@@ -24,7 +24,7 @@ class CreateIdeaComment extends Component
 
         $this->validate();
 
-        IdeaComment::create([
+        Comment::create([
             'idea_id' => $this->idea->id,
             'user_id' => auth()->id(),
             'body' => $this->comment,
@@ -35,6 +35,6 @@ class CreateIdeaComment extends Component
 
     public function render()
     {
-        return view('livewire.create-idea-comment');
+        return view('livewire.create-comment');
     }
 }
