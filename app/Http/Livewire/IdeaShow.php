@@ -47,7 +47,6 @@ class IdeaShow extends Component
         $this->idea->refresh();
     }
 
-<<<<<<< HEAD
     public function mount(Idea $idea)
     {
         $this->idea = $idea;
@@ -73,43 +72,15 @@ class IdeaShow extends Component
         $this->getVoter()->unvote($this->user);
         $this->isVoted = false;
         $this->votesCount -= 1;
-=======
-    public function vote()
-    {
-        if (! auth()->check()) {
-            return redirect(route('login'));
-        }
-
-        if ($this->hasVoted) {
-            try {
-                $this->idea->removeVote(auth()->user());
-            } catch (VoteNotFoundException $e) {
-                // do nothing
-            }
-            $this->votesCount--;
-            $this->hasVoted = false;
-        } else {
-            try {
-                $this->idea->vote(auth()->user());
-            } catch (DuplicateVoteException $e) {
-                // do nothing
-            }
-            $this->votesCount++;
-            $this->hasVoted = true;
-        }
->>>>>>> master
     }
 
     public function render()
     {
         return view('livewire.idea-show');
     }
-<<<<<<< HEAD
 
     private function getVoter(): Voter
     {
         return new Voter($this->idea);
     }
-=======
->>>>>>> master
 }
