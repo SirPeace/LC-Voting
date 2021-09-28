@@ -13,45 +13,43 @@ beforeEach(function () {
     (new CategorySeeder)->run();
     (new StatusSeeder)->run();
 
-    $user = User::factory()->create();
-
     $openStatusID = 1;
     $consideringStatusID = 2;
     $inProgressStatusID = 3;
 
-    Idea::factory()->createMany([
+    Idea::factory()->existing()->createMany([
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 1,
             'status_id' => $openStatusID,
             'title' => 'First idea',
         ],
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 2,
             'status_id' => $consideringStatusID,
             'title' => 'Second idea',
         ],
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 2,
             'status_id' => $openStatusID,
             'title' => 'Third idea',
         ],
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 3,
             'status_id' => $openStatusID,
             'title' => 'Fourth idea',
         ],
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 3,
             'status_id' => $consideringStatusID,
             'title' => 'Fifth idea',
         ],
         [
-            'user_id' => $user,
+            'user_id' => User::factory()->create(),
             'category_id' => 3,
             'status_id' => $inProgressStatusID,
             'title' => 'Sixth idea',

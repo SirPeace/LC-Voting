@@ -21,7 +21,7 @@ class MarkIdeaAsNotSpamModal extends Component
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $this->idea->removeSpamMarks();
+        $this->idea->spamMarks()->detach();
 
         $this->emit('ideaWasMarkedAsNotSpam', 'Spam marks were removed');
     }

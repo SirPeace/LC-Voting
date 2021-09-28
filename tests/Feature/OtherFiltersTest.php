@@ -3,7 +3,6 @@
 use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
-use App\Models\Votable;
 use Database\Seeders\StatusSeeder;
 use Database\Seeders\CategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,7 +16,7 @@ beforeEach(function () {
     $this->userA = User::factory()->create();
     $this->userB = User::factory()->create();
 
-    Idea::factory()->createMany([
+    $ideas = Idea::factory()->existing()->createMany([
         [
             'user_id' => $this->userA->id,
             'category_id' => 1,
@@ -38,29 +37,11 @@ beforeEach(function () {
         ],
     ]);
 
-    // 2 votes for first, 1 vote for second
-    Votable::factory()->createMany([
-        [
-            'user_id' => $this->userA->id,
-            'votable_type' => Idea::class,
-            'votable_id' => 1,
-        ],
-        [
-            'user_id' => $this->userB->id,
-            'votable_type' => Idea::class,
-            'votable_id' => 1,
-        ],
-        [
-            'user_id' => $this->userB->id,
-            'votable_type' => Idea::class,
-            'votable_id' => 2,
-        ],
-        [
-            'user_id' => $this->userB->id,
-            'votable_type' => Idea::class,
-            'votable_id' => 3,
-        ],
-    ]);
+    // 2 votes for first, 1 vote for second, 1 vote for third
+    $ideas[0]->voters()->attach($this->userA);
+    $ideas[0]->voters()->attach($this->userB);
+    $ideas[1]->voters()->attach($this->userB);
+    $ideas[2]->voters()->attach($this->userB);
 });
 
 
@@ -145,29 +126,25 @@ test('no_filters_does_not_affect_ideas_list', function () {
 });
 
 test('spam_ideas_filter_works', function () {
-    $admin = User::factory()->create([
-        'email' => 'roman.khabibulin12@gmail.com'
-    ]);
-
-    $ideaOne = Idea::factory()->create([
+    $ideaOne = Idea::factory()->existing()->create([
         'title' => 'Idea One',
+        'user_id' => User::factory()->create()
     ]);
-    $ideaOne->markAsSpam(User::factory()->create());
+    $ideaOne->spamMarks()->attach(User::factory()->create());
 
-    $ideaTwo = Idea::factory()->create([
+    $ideaTwo = Idea::factory()->existing()->create([
         'title' => 'Idea Two',
+        'user_id' => User::factory()->create()
     ]);
-    $ideaTwo->markAsSpam(User::factory()->create());
-    $ideaTwo->markAsSpam(User::factory()->create());
+    $ideaTwo->spamMarks()->attach(User::factory(2)->create()->map->id);
 
-    $ideaThree = Idea::factory()->create([
+    $ideaThree = Idea::factory()->existing()->create([
         'title' => 'Idea Three',
+        'user_id' => User::factory()->create()
     ]);
-    $ideaThree->markAsSpam(User::factory()->create());
-    $ideaThree->markAsSpam(User::factory()->create());
-    $ideaThree->markAsSpam(User::factory()->create());
+    $ideaThree->spamMarks()->attach(User::factory(3)->create()->map->id);
 
-    Livewire::actingAs($admin)
+    Livewire::actingAs(User::factory()->admin()->create())
         ->test('ideas-index')
         ->set('filter', 'spam')
         ->assertViewHas('ideas', function ($ideas) {

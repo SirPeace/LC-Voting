@@ -5,32 +5,12 @@ use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Comment;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 
-beforeEach(function () {
-    (new CategorySeeder)->run();
-    (new StatusSeeder)->run();
-});
-
-
-// ! Does not work
-// test("create-comment_livewire_component_renders", function ()
-// {
-//     $idea = Idea::factory()->create();
-
-//     $response = $this->get(route('idea.show', $idea));
-
-//     $response->assertSeeLivewire('create-comment');
-// });
-
-
-test("add_comment_form_renders_when_user_is_logged_in", function ()
-{
+test("add_comment_form_renders_when_user_is_logged_in", function () {
     $user = User::factory()->create();
     $idea = Idea::factory()->create();
 
@@ -49,8 +29,7 @@ test("add_comment_form_does_not_render_when_user_is_logged_out", function () {
 });
 
 
-test("add_comment_form_validation_works", function ()
-{
+test("add_comment_form_validation_works", function () {
     $user = User::factory()->create();
     $idea = Idea::factory()->create();
 
@@ -67,8 +46,7 @@ test("add_comment_form_validation_works", function ()
 });
 
 
-test("add_comment_form_works", function ()
-{
+test("add_comment_form_works", function () {
     $user = User::factory()->create();
     $idea = Idea::factory()->create();
 

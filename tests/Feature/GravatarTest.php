@@ -4,9 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client as GuzzleClient;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->client = new GuzzleClient(['verify' => false]);
+});
 
 
 test("user_can_generate_gravatar_default_image_when_no_email_found_first_character_a", function () {
@@ -22,9 +26,9 @@ test("user_can_generate_gravatar_default_image_when_no_email_found_first_charact
         $gravatarUrl
     );
 
-    $response = Http::get($user->getAvatar());
+    $response = $this->client->get($user->getAvatar());
 
-    $this->assertTrue($response->successful());
+    $this->assertTrue($response->getStatusCode() === 200);
 });
 
 
@@ -41,9 +45,9 @@ test("user_can_generate_gravatar_default_image_when_no_email_found_first_charact
         $gravatarUrl
     );
 
-    $response = Http::get($user->getAvatar());
+    $response = $this->client->get($user->getAvatar());
 
-    $this->assertTrue($response->successful());
+    $this->assertTrue($response->getStatusCode() === 200);
 });
 
 
@@ -60,9 +64,9 @@ test("user_can_generate_gravatar_default_image_when_no_email_found_first_charact
         $gravatarUrl
     );
 
-    $response = Http::get($user->getAvatar());
+    $response = $this->client->get($user->getAvatar());
 
-    $this->assertTrue($response->successful());
+    $this->assertTrue($response->getStatusCode() === 200);
 });
 
 
@@ -79,7 +83,7 @@ test("user_can_generate_gravatar_default_image_when_no_email_found_first_charact
         $gravatarUrl
     );
 
-    $response = Http::get($user->getAvatar());
+    $response = $this->client->get($user->getAvatar());
 
-    $this->assertTrue($response->successful());
+    $this->assertTrue($response->getStatusCode() === 200);
 });

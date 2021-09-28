@@ -4,10 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Idea;
 use App\Models\Status;
-use App\Models\Votable;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class IdeaRepository
 {
@@ -71,16 +71,19 @@ class IdeaRepository
             ->when(
                 mb_strlen($search) >= 3,
                 fn (Builder $query) => (
-                    $query->where('title', 'ilike', "%$search%")
+                    $query->whereRaw(
+                        "LOWER(title) LIKE '%".strtolower($search)."%'"
+                    )
                 )
             )
             // Check if user voted for idea (n+1)
             ->addSelect([
-                'voted_by_user' => Votable::select('id')
+                'voted_by_user' => DB::table('votes')
+                    ->select('id')
                     ->where('user_id', auth()->id())
-                    ->whereColumn('votable_id', 'ideas.id')
+                    ->whereColumn('idea_id', 'ideas.id')
             ])
-            // Add votes_count property (n+1)
+            // Add votes_count and comments_count properties (n+1)
             ->withCount('votes')
             ->withCount('comments')
             ->latest($orderBy)

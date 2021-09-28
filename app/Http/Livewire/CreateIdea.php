@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Idea;
-use App\Models\Votable;
 use Illuminate\Http\Response;
 use Livewire\Component;
 
@@ -22,31 +21,27 @@ class CreateIdea extends Component
 
     public function createIdea()
     {
-        if (auth()->check()) {
-            $this->validate();
-
-            $idea = Idea::create([
-                'user_id' => auth()->id(),
-                'category_id' => $this->category_id,
-                'status_id' => 1,
-                'title' => $this->title,
-                'description' => $this->description,
-            ]);
-
-            Votable::create([
-                'user_id' => auth()->id(),
-                'votable_id' => $idea->id,
-                'votable_type' => Idea::class,
-            ]);
-
-            session()->flash('ideaCreate', 'Idea was successfully created');
-
-            $this->reset();
-
-            return redirect()->route('idea.index');
+        if (auth()->guest()) {
+            abort(Response::HTTP_FORBIDDEN);
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        $this->validate();
+
+        $idea = Idea::create([
+            'user_id' => auth()->id(),
+            'category_id' => $this->category_id,
+            'status_id' => 1,
+            'title' => $this->title,
+            'description' => $this->description,
+        ]);
+
+        $idea->voters()->attach(auth()->id());
+
+        session()->flash('ideaCreate', 'Idea was successfully created');
+
+        $this->reset();
+
+        return redirect()->route('idea.index');
     }
 
     public function render()

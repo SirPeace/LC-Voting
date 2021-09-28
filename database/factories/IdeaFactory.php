@@ -26,10 +26,25 @@ class IdeaFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'category_id' => mt_rand(1, Category::count()),
-            'status_id' => mt_rand(1, Status::count()),
+            'category_id' => Category::factory(),
+            'status_id' => Status::factory(),
             'title' => ucwords($this->faker->words(4, true)),
             'description' => $this->faker->paragraph(5),
         ];
+    }
+
+    /**
+     * Use existing models for relationships
+     *
+     * @return static
+     */
+    public function existing(): static
+    {
+        // Numbers are set according to seeders
+        return $this->state(fn (array $attributes) => [
+            'user_id' => $this->faker->numberBetween(1, 20),
+            'category_id' => $this->faker->numberBetween(1, 4),
+            'status_id' => $this->faker->numberBetween(1, 5),
+        ]);
     }
 }

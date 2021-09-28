@@ -15,11 +15,13 @@ class CreateIdeaSpamMarksTable extends Migration
     {
         Schema::create('idea_spam_marks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('idea_id');
-            $table->timestamps();
+
+            $table->foreignId('user_id')->onDelete('cascade');
+            $table->foreignId('idea_id')->onDelete('cascade');
 
             $table->unique(['user_id', 'idea_id']);
+
+            $table->timestamps();
         });
     }
 

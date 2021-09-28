@@ -15,8 +15,9 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        foreach (Idea::all() as $idea) {
-            Comment::factory(3)->create(["idea_id" => $idea->id]);
-        }
+        // Create 3 comments for each idea
+        Idea::all()->each(function (Idea $idea) {
+            Comment::factory()->existing()->for($idea)->count(3)->create();
+        });
     }
 }

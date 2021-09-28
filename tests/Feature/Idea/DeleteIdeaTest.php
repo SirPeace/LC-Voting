@@ -3,17 +3,9 @@
 use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
-use App\Models\Category;
-use Database\Seeders\StatusSeeder;
-use Database\Seeders\CategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
-
-beforeEach(function () {
-    (new CategorySeeder)->run();
-    (new StatusSeeder)->run();
-});
 
 
 test("livewire_component_shows_if_user_is_authorized", function () {

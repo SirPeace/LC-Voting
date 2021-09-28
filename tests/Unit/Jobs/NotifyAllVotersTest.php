@@ -4,22 +4,14 @@ namespace Tests\Unit\Jobs;
 
 use App\Jobs\NotifyVoters;
 use App\Mail\IdeaStatusChange;
-use App\Mail\IdeaStatusUpdatedMailable;
 use App\Models\Idea;
 use App\Models\User;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 uses(RefreshDatabase::class);
 uses(TestCase::class);
-
-beforeEach(function () {
-    (new StatusSeeder)->run();
-    (new CategorySeeder)->run();
-});
 
 test('it_sends_an_email_to_all_voters', function () {
     $user = User::factory()->create([

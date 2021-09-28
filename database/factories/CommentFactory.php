@@ -29,4 +29,18 @@ class CommentFactory extends Factory
             'body'    => $this->faker->paragraph()
         ];
     }
+
+    /**
+     * Use existing models for relationships.
+     *
+     * @return array
+     */
+    public function existing(): static
+    {
+        // Numbers are set according to seeders
+        return $this->state(fn (array $attributes) => [
+            'user_id' => $this->faker->numberBetween(1, 20),
+            'idea_id' => $this->faker->numberBetween(1, 100),
+        ]);
+    }
 }

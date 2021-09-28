@@ -39,7 +39,7 @@
             <livewire:idea-index :idea="$idea" :key="$idea->id" />
         @empty
             <p class="text-base text-center">
-                <img src="{{ asset('/img/no-ideas.svg') }}" class="inline mb-4" />
+                <img src="{{ asset('/img/404.svg') }}" class="inline mb-4" />
                 <span class="font-semibold block mb-2 text-xl">No ideas were found...</span>
                 Maybe you should publish the one?
             </p>

@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use App\Interfaces\IVotable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Idea extends Model implements IVotable
+class Idea extends Model
 {
     use HasFactory, Sluggable;
 
@@ -49,9 +46,14 @@ class Idea extends Model implements IVotable
         return $this->belongsTo(Status::class);
     }
 
-    public function votes(): MorphToMany
+    public function voters(): BelongsToMany
     {
-        return $this->morphToMany(User::class, 'votable');
+        return $this->belongsToMany(User::class, 'votes');
+    }
+
+    public function votes(): BelongsToMany
+    {
+        return $this->voters();
     }
 
     public function spamMarks(): BelongsToMany
@@ -62,19 +64,5 @@ class Idea extends Model implements IVotable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
-    }
-
-    public function markAsSpam(User $user): void
-    {
-        try {
-            $this->spamMarks()->save($user);
-        } catch (\Exception $e) {
-            // User already marked idea as spam
-        }
-    }
-
-    public function removeSpamMarks(): void
-    {
-        $this->spamMarks()->detach();
     }
 }

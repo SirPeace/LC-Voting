@@ -2,27 +2,18 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use Database\Seeders\CategorySeeder;
+use App\Models\Status;
+use Livewire\Livewire;
 use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    (new CategorySeeder)->run();
     (new StatusSeeder)->run();
 
-    $this->admin = User::factory()->create([
-        'name' => 'Roman Khabibulin',
-        'email' => 'roman.khabibulin12@gmail.com',
-    ]);
-
-    $this->idea = Idea::factory()->create([
-        'title' => 'Quick brown fox',
-        'status_id' => 1,
-        'user_id' => $this->admin->id,
-    ]);
+    $this->admin = User::factory()->admin()->create();
+    $this->idea = Idea::factory()->for(Status::first())->create();
 });
 
 

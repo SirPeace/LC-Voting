@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,16 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create([
-            "name" => "Big Brother",
-            "email" => "admin@mail.com",
-            "password" => Hash::make("admin"),
+        $this->call([
+            CategorySeeder::class,
+            StatusSeeder::class,
+            UserSeeder::class,
+            IdeaSeeder::class,
+            VoteSeeder::class,
+            CommentSeeder::class
         ]);
-
-        (new CategorySeeder)->run();
-        (new StatusSeeder)->run();
-        (new IdeaSeeder)->run();
-        (new VotableSeeder)->run();
-        (new CommentSeeder)->run();
     }
 }

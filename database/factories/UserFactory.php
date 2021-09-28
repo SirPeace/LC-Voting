@@ -32,6 +32,18 @@ class UserFactory extends Factory
     }
 
     /**
+     * Set the admin email.
+     *
+     * @return void
+     */
+    public function admin()
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => 'admin@mail.com',
+        ]);
+    }
+
+    /**
      * Indicate that the model's email address should be unverified.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory

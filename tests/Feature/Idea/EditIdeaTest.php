@@ -4,16 +4,9 @@ use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Category;
-use Database\Seeders\StatusSeeder;
-use Database\Seeders\CategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
-
-beforeEach(function () {
-    (new CategorySeeder)->run();
-    (new StatusSeeder)->run();
-});
 
 
 test("livewire_component_shows_if_user_is_authorized", function () {
@@ -55,19 +48,16 @@ test("livewire_component_form_validation_works", function () {
 
 
 test("authorized_user_can_edit_idea", function () {
-    [$categoryOne, $categoryTwo] = Category::whereIn('id', [1, 2])->get();
-
     $user = User::factory()->create();
 
-    $idea = Idea::factory()->create([
-        'user_id' => $user->id,
-        'category_id' => $categoryOne,
-    ]);
+    $idea = Idea::factory()->for($user)->create();
+
+    $newCategory = Category::factory()->create();
 
     Livewire::actingAs($user)
         ->test('edit-idea-modal', ['idea' => $idea])
         ->set('title', 'My Edited Idea')
-        ->set('category_id', $categoryTwo->id)
+        ->set('category_id', $newCategory->id)
         ->set('description', 'This is my edited idea')
         ->call('updateIdea')
         ->assertEmitted('ideaUpdate');
@@ -75,26 +65,24 @@ test("authorized_user_can_edit_idea", function () {
     $this->assertDatabaseHas('ideas', [
         'title' => 'My Edited Idea',
         'description' => 'This is my edited idea',
-        'category_id' => $categoryTwo->id,
+        'category_id' => $newCategory->id,
     ]);
 });
 
 
 test("authorized_user_can_not_edit_idea_after_one_hour", function () {
-    [$categoryOne, $categoryTwo] = Category::whereIn('id', [1, 2])->get();
-
     $user = User::factory()->create();
 
-    $idea = Idea::factory()->create([
-        'user_id' => $user->id,
-        'category_id' => $categoryOne,
+    $idea = Idea::factory()->for($user)->create([
         'created_at' => now()->subHour(),
     ]);
+
+    $newCategory = Category::factory()->create();
 
     Livewire::actingAs($user)
         ->test('edit-idea-modal', ['idea' => $idea])
         ->set('title', 'My Edited Idea')
-        ->set('category_id', $categoryTwo->id)
+        ->set('category_id', $newCategory->id)
         ->set('description', 'This is my edited idea')
         ->call('updateIdea')
         ->assertNotEmitted('ideaUpdate');

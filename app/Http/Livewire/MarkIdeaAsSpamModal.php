@@ -21,7 +21,7 @@ class MarkIdeaAsSpamModal extends Component
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $this->idea->markAsSpam(auth()->user());
+        $this->idea->spamMarks()->attach(auth()->id());
 
         $this->emit('ideaWasMarkedAsSpam', 'Idea was marked as spam');
     }

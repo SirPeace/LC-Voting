@@ -6,8 +6,6 @@ use Livewire\Livewire;
 use Illuminate\Http\Response;
 use App\Http\Livewire\IdeaShow;
 use App\Http\Livewire\IdeaIndex;
-use Database\Seeders\StatusSeeder;
-use Database\Seeders\CategorySeeder;
 use App\Http\Livewire\MarkIdeaAsSpamModal;
 use App\Http\Livewire\MarkIdeaAsNotSpamModal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,13 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    (new CategorySeeder)->run();
-    (new StatusSeeder)->run();
-
-    $this->admin = User::factory()->create([
-        'name' => 'Roman Khabibulin',
-        'email' => 'roman.khabibulin12@gmail.com',
-    ]);
+    $this->admin = User::factory()->admin()->create();
 });
 
 
@@ -104,8 +96,9 @@ test('does_not_show_mark_idea_as_not_spam_livewire_component_when_user_does_not_
 
 test('marking_an_idea_as_not_spam_works_when_user_has_authorization', function () {
     $idea = Idea::factory()->create();
-    foreach (range(1, 4) as $i)
+    foreach (range(1, 4) as $i) {
         $idea->spamMarks()->save(User::factory()->create());
+    }
 
     Livewire::actingAs($this->admin)
         ->test(MarkIdeaAsNotSpamModal::class, [
@@ -151,8 +144,9 @@ test('marking_an_idea_as_not_spam_does_not_show_on_menu_when_user_does_not_have_
 
 test('spam_reports_count_shows_on_idea_index_page_if_logged_in_as_admin', function () {
     $idea = Idea::factory()->create();
-    foreach (range(1, 3) as $i)
+    foreach (range(1, 3) as $i) {
         $idea->spamMarks()->save(User::factory()->create());
+    }
 
     Livewire::actingAs($this->admin)
         ->test(IdeaIndex::class, [
@@ -164,8 +158,9 @@ test('spam_reports_count_shows_on_idea_index_page_if_logged_in_as_admin', functi
 
 test('spam_reports_count_shows_on_idea_show_page_if_logged_in_as_admin', function () {
     $idea = Idea::factory()->create();
-    foreach (range(1, 3) as $i)
+    foreach (range(1, 3) as $i) {
         $idea->spamMarks()->save(User::factory()->create());
+    }
 
     Livewire::actingAs($this->admin)
         ->test(IdeaShow::class, [

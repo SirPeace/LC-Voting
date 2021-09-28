@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Idea;
 use App\Models\User;
-use App\Voter;
 use Livewire\Component;
 
 class IdeaIndex extends Component
@@ -28,16 +27,18 @@ class IdeaIndex extends Component
             return redirect(route('login'));
         }
 
-        $this->getVoter()->vote($this->user);
-        $this->isVoted = true;
-        $this->votesCount += 1;
+        if ($this->voteIdea()) {
+            $this->isVoted = true;
+            $this->votesCount += 1;
+        }
     }
 
     public function unvote()
     {
-        $this->getVoter()->unvote($this->user);
-        $this->isVoted = false;
-        $this->votesCount -= 1;
+        if ($this->unvoteIdea()) {
+            $this->isVoted = false;
+            $this->votesCount -= 1;
+        }
     }
 
     public function render()
@@ -45,8 +46,35 @@ class IdeaIndex extends Component
         return view('livewire.idea-index');
     }
 
-    private function getVoter(): Voter
+    /**
+     * Make this user to vote for this idea
+     *
+     * @return void
+     */
+    private function voteIdea(): bool
     {
-        return new Voter($this->idea);
+        try {
+            $this->idea->voters()->attach($this->user);
+            return true;
+        } catch (\Illuminate\Database\QueryException $e) {
+            // User already voted for this idea
+            return false;
+        }
+    }
+
+    /**
+     * Make this user to unvote for this idea
+     *
+     * @return void
+     */
+    private function unvoteIdea(): bool
+    {
+        try {
+            $this->idea->voters()->detach($this->user);
+            return true;
+        } catch (\Illuminate\Database\QueryException $e) {
+            // User did not vote for this idea
+            return false;
+        }
     }
 }

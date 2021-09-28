@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoryFactory extends Factory
@@ -22,11 +21,27 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $alias = ucwords($this->faker->words(asText: true));
+        $statusNames = Category::all()->map?->name;
+
+        $count = 0;
+        do {
+            if (++$count === 100) {
+                throw new \Exception("Can't create unique category");
+            }
+
+            $name = $this->faker->randomElement([
+                'category_1',
+                'category_2',
+                'category_3',
+                'category_4',
+            ]);
+        } while ($statusNames->contains($name));
+
+        $alias = ucwords(str_replace($name, '_', ' '));
 
         return [
             'alias' => $alias,
-            'name' => Str::slug($alias),
+            'name' => $name,
         ];
     }
 }

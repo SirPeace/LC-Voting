@@ -2,10 +2,10 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\StatusSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Database\Seeders\StatusSeeder;
+use Database\Seeders\CategorySeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -13,7 +13,7 @@ beforeEach(function () {
     (new CategorySeeder)->run();
     (new StatusSeeder)->run();
 
-    Idea::factory()->createMany([
+    Idea::factory()->existing()->createMany([
         // 2 * statuses.name = 'considering'
         [
             'user_id' => User::factory()->create(),
@@ -58,4 +58,15 @@ test('selected_status_is_highlighted', function () {
         ->set('onIndexPage', true)
         ->assertSet('status', 'considering')
         ->assertSeeHTMLInOrder(['border-blue text-gray-900', 'Considering (2)']);
+});
+
+
+test('show_page_does_not_show_selected_status', function () {
+    $idea = Idea::factory()->existing()->create([
+        'user_id' => User::factory()->create()
+    ]);
+
+    $response = $this->get(route('idea.show', $idea));
+
+    $response->assertDontSee('border-blue text-gray-900');
 });

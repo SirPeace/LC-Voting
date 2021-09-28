@@ -6,6 +6,10 @@
             @endforeach
         </div> <!-- end comments-container -->
     @else
-        shit
+        <p class="text-base text-center mt-5">
+            <img src="{{ asset('/img/404.svg') }}" class="inline mb-4" />
+            <span class="font-semibold block mb-2 text-xl">No comments yet...</span>
+            Maybe you should add one?
+        </p>
     @endif
 </div>

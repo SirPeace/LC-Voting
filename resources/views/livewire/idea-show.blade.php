@@ -11,11 +11,11 @@
                     {{ $idea->title }}
                 </h4>
                 @admin
-                @if ($idea->spamMarks()->count() > 0)
-                    <div class="text-red-600 mt-3 line-clamp-3">
-                        Spam Reports: {{ $idea->spamMarks()->count() }}
-                    </div>
-                @endif
+                    @if ($idea->spamMarks()->count() > 0)
+                        <div class="text-red-600 mt-3 line-clamp-3">
+                            Spam Reports: {{ $idea->spamMarks()->count() }}
+                        </div>
+                    @endif
                 @endadmin
                 <div class="text-gray-600 mt-3">
                     {{ $idea->description }}
