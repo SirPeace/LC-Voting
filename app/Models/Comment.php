@@ -10,11 +10,8 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'idea_id',
-        'user_id',
-        'body'
-    ];
+    protected $perPage = 10;
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {

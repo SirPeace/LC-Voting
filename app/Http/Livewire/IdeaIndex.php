@@ -8,10 +8,10 @@ use Livewire\Component;
 
 class IdeaIndex extends Component
 {
-    public Idea $idea;
-    public ?User $user = null;
+    public $idea;
+    public $user = null;
     public $votesCount = 0;
-    public bool $isVoted;
+    public $isVoted;
 
     public function mount(Idea $idea)
     {

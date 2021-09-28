@@ -8,10 +8,10 @@ use Livewire\Component;
 
 class IdeaShow extends Component
 {
-    public Idea $idea;
-    public ?User $user = null;
-    public int $votesCount;
-    public bool $isVoted;
+    public $idea;
+    public $user = null;
+    public $votesCount;
+    public $isVoted;
 
     protected $listeners = [
         'statusUpdate',

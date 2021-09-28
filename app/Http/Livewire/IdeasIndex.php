@@ -11,10 +11,10 @@ class IdeasIndex extends Component
 {
     use WithPagination;
 
-    public string $status = '';
-    public string $category = '';
-    public string $filter = '';
-    public string $search = '';
+    public $status = '';
+    public $category = '';
+    public $filter = '';
+    public $search = '';
 
     protected $queryString = [
         'status' => ['except' => ''],

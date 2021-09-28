@@ -7,6 +7,13 @@
         Livewire.hook('message.processed', (message, component) => {
             console.log(message)
 
+            // Go to the first comment on page change
+            if (['gotoPage', 'nextPage', 'previousPage'].includes(message.updateQueue[0].method)) {
+                const firstComment = document.querySelector('.comment-container:first-child')
+                firstComment.scrollIntoView({ behavior: 'smooth'})
+            }
+
+            // Go to the last comment when creating a new comment (on same page)
             if (
                 message.updateQueue[0].payload.event === 'ideaCommentCreated' &&
                 message.component.fingerprint.name === 'comments'

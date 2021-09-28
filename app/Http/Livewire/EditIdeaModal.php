@@ -15,10 +15,10 @@ class EditIdeaModal extends Component
 {
     use ShouldAuthorize;
 
-    public Idea $idea;
-    public int $category_id;
-    public string $title;
-    public string $description;
+    public $idea;
+    public $category_id;
+    public $title;
+    public $description;
 
     protected $rules = [
         'title' => 'required|min:10',

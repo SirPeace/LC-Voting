@@ -42,7 +42,7 @@ test("ideas_pagination_works", function () {
         'user_id' => User::factory()->create(),
     ]);
 
-    Idea::factory()->existing()->count(Idea::PAGINATION_COUNT - 1)->create([
+    Idea::factory()->existing()->count($firstIdea->getPerPage() - 1)->create([
         'user_id' => User::factory()->create(),
     ]);
 

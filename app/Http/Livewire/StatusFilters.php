@@ -10,11 +10,11 @@ use Livewire\Component;
 class StatusFilters extends Component
 {
     /**
-     * @var $status ''|'open'|'considering'|'in_progress'|'implemented'|'closed'
+     * @var ''|'open'|'considering'|'in_progress'|'implemented'|'closed'
      */
-    public string $status;
-    public bool $onIndexPage = true;
-    public array $statusesCount;
+    public $status;
+    public $onIndexPage = true;
+    public $statusesCount;
 
     public function mount(): void
     {

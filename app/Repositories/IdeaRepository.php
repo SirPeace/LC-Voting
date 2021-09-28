@@ -87,7 +87,8 @@ class IdeaRepository
             ->withCount('votes')
             ->withCount('comments')
             ->latest($orderBy)
-            ->simplePaginate(Idea::PAGINATION_COUNT);
+            ->simplePaginate()
+            ->withQueryString();
 
         return $ideasPaginator;
     }

@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class MarkIdeaAsSpamModal extends Component
 {
-    public Idea $idea;
+    public $idea;
 
     public function mount(Idea $idea)
     {

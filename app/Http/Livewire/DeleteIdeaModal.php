@@ -10,7 +10,7 @@ class DeleteIdeaModal extends Component
 {
     use ShouldAuthorize;
 
-    public Idea $idea;
+    public $idea;
 
     public function deleteIdea()
     {

@@ -9,8 +9,8 @@ use Illuminate\Http\Response;
 
 class CreateComment extends Component
 {
-    public Idea $idea;
-    public string $comment = '';
+    public $idea;
+    public $comment = '';
 
     protected $rules = [
         'comment' => 'required|string|min:10',

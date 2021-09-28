@@ -10,9 +10,9 @@ use Illuminate\Http\Response;
 
 class SetStatus extends Component
 {
-    public Idea $idea;
-    public int $statusID;
-    public bool $notifyAllVoters = true;
+    public $idea;
+    public $statusID;
+    public $notifyAllVoters = true;
 
     public function mount(Idea $idea)
     {

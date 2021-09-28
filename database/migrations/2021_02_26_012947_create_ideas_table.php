@@ -21,7 +21,7 @@ class CreateIdeasTable extends Migration
             $table->foreignId('status_id')->constrained()->onDelete('set null');
 
             $table->string('title');
-            $table->string('slug')->nullable();
+            $table->string('slug')->unique();
             $table->text('description');
 
             $table->timestamps();
