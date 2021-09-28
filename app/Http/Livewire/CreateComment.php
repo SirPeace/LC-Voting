@@ -30,7 +30,7 @@ class CreateComment extends Component
             'body' => $this->comment,
         ]);
 
-        $this->emit('ideaCommentCreated', 'Comment was successfuly created.');
+        $this->emit('commentCreated', 'Comment was successfuly created.');
     }
 
     public function render()

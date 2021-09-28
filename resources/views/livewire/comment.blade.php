@@ -15,6 +15,10 @@
                 <div class="flex items-center text-xs text-gray-400 font-semibold space-x-2">
                     <div class="font-bold text-gray-900">{{ $comment->user->name }}</div>
                     <div>&bull;</div>
+                    @if ($comment->user_id === $comment->idea->user_id)
+                        <span class="bg-gray-200 px-3 py-1 border border-gray-300 rounded-xl text-gray-500 font-bold">OP</span>
+                        <div>&bull;</div>
+                    @endif
                     <div>{{ $comment->created_at->diffForHumans() }}</div>
                 </div>
                 <div
@@ -35,6 +39,21 @@
                             x-show.transition.origin.top.left="isOpen"
                             @click.away="isOpen = false"
                             @keydown.escape.window="isOpen = false">
+                            @can('update', $comment)
+                                <li>
+                                    <a
+                                        href="#"
+                                        class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3"
+                                        @click="
+                                            isOpen = false
+                                            await Livewire.emit('setEditComment', {{ $comment->id }})
+                                            $dispatch('custom-show-edit-comment-modal', { body: '{{ $comment->body }}' })
+                                        "
+                                    >
+                                        Edit Comment
+                                    </a>
+                                </li>
+                            @endcan
                             <li>
                                 <a href="#"
                                    class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">

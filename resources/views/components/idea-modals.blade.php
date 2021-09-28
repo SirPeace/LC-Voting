@@ -13,3 +13,7 @@
 @admin
     <livewire:mark-idea-as-not-spam-modal :idea="$idea" />
 @endadmin
+
+{{-- @can('update', $idea) --}}
+<livewire:edit-comment-modal />
+{{-- @endcan --}}

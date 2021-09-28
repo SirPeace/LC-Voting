@@ -14,14 +14,21 @@ class Comments extends Component
 
     public $idea;
 
-    protected $listeners = ['ideaCommentCreated'];
+    protected $listeners = ['commentCreated', 'commentUpdated'];
 
     public function mount(Idea $idea)
     {
         $this->idea = $idea;
     }
 
-    public function ideaCommentCreated()
+    public function commentCreated()
+    {
+        $this->idea->refresh();
+
+        $this->gotoPage($this->getPaginatedComments()->lastPage());
+    }
+
+    public function commentUpdated()
     {
         $this->idea->refresh();
 
@@ -39,6 +46,7 @@ class Comments extends Component
     {
         return Comment::query()
             ->with('user') // n+1
+            ->with('idea') // n+1
             ->where('idea_id', $this->idea->id)
             ->paginate();
     }

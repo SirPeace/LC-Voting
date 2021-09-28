@@ -18,7 +18,7 @@ class IdeaShow extends Component
         'ideaUpdate',
         'ideaWasMarkedAsSpam',
         'ideaWasMarkedAsNotSpam',
-        'ideaCommentCreated'
+        'commentCreated'
     ];
 
     public function statusUpdate()
@@ -41,7 +41,7 @@ class IdeaShow extends Component
         $this->idea->refresh();
     }
 
-    public function ideaCommentCreated()
+    public function commentCreated()
     {
         $this->idea->refresh();
     }

@@ -1,12 +1,10 @@
 <div x-data="{ isOpen: false }"
      x-init="
-        Livewire.on('ideaCommentCreated', () => {
+        Livewire.on('commentCreated', () => {
             isOpen = false
         })
 
         Livewire.hook('message.processed', (message, component) => {
-            console.log(message)
-
             // Go to the first comment on page change
             if (['gotoPage', 'nextPage', 'previousPage'].includes(message.updateQueue[0].method)) {
                 const firstComment = document.querySelector('.comment-container:first-child')
@@ -15,7 +13,7 @@
 
             // Go to the last comment when creating a new comment (on same page)
             if (
-                message.updateQueue[0].payload.event === 'ideaCommentCreated' &&
+                message.updateQueue[0].payload.event === 'commentCreated' &&
                 message.component.fingerprint.name === 'comments'
             ) {
                 const lastComment = document.querySelector('.comment-container:last-child')
@@ -74,7 +72,7 @@
             </form>
         @else
             <div class="my-4 text-center px-4">
-                <p class="mb-5">Please login or create an account to post a comment</p>
+                <p class="mb-5">Please log in or register to post a comment</p>
 
                 <div class="sm:flex sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
                     <a

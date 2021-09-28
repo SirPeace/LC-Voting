@@ -121,7 +121,8 @@
         <x-notification event="ideaUpdate" />
         <x-notification event="ideaWasMarkedAsSpam" />
         <x-notification event="ideaWasMarkedAsNotSpam" />
-        <x-notification event="ideaCommentCreated" />
+        <x-notification event="commentCreated" />
+        <x-notification event="commentUpdated" />
         <x-notification :flash="session('ideaDelete')" />
         <x-notification :flash="session('ideaCreate')" />
 

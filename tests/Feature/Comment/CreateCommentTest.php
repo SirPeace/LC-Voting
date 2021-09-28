@@ -25,7 +25,7 @@ test("add_comment_form_does_not_render_when_user_is_logged_out", function () {
 
     $response = $this->get(route('idea.show', $idea));
 
-    $response->assertSee('Please login or create an account to post a comment');
+    $response->assertSee('Please log in or register to post a comment');
 });
 
 
@@ -56,7 +56,7 @@ test("add_comment_form_works", function () {
         ])
         ->set('comment', 'This is my first comment')
         ->call('addComment')
-        ->assertEmitted('ideaCommentCreated');
+        ->assertEmitted('commentCreated');
 
     $this->assertEquals(1, Comment::count());
     $this->assertEquals('This is my first comment', $idea->comments->first()->body);
