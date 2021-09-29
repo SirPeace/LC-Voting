@@ -22,11 +22,11 @@ class EditCommentModal extends Component
         $this->emit('editCommentModalInit');
     }
 
-    public function updateComment(): void
+    public function updateComment()
     {
         if (
             auth()->guest() ||
-            auth()->user()->cannot('update', $this->comment)
+            optional(auth()->user())->cannot('update', $this->comment)
         ) {
             return abort(Response::HTTP_FORBIDDEN);
         }

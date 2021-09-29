@@ -39,9 +39,13 @@
                             x-show.transition.origin.top.left="isOpen"
                             @click.away="isOpen = false"
                             @keydown.escape.window="isOpen = false">
+                            <?=
+                                "[".auth()->id().", ".$comment->user_id."]"
+                            ?>
                             @can('update', $comment)
                                 <li>
                                     <a
+                                        data-test-id="edit-comment-link"
                                         href="#"
                                         class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3"
                                         @click="
