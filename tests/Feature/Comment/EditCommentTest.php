@@ -24,6 +24,11 @@ test('only authorized user can edit comment', function () {
     $this->get(route('idea.show', ['idea' => $this->idea]))
         ->assertDontSee('data-test-id="edit-comment-link"', false);
 
+    Livewire::test(EditCommentModal::class, ['comment' => $this->comment])
+        ->set('body', 'The new comment body')
+        ->call('updateComment')
+        ->assertNotEmitted('commentUpdated');
+
     $this->actingAs($this->comment->user)
         ->get(route('idea.show', ['idea' => $this->idea]))
         ->assertSee('data-test-id="edit-comment-link"', false);
