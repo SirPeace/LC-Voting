@@ -14,7 +14,11 @@ class Comments extends Component
 
     public $idea;
 
-    protected $listeners = ['commentCreated', 'commentUpdated'];
+    protected $listeners = [
+        'commentCreated',
+        'commentUpdated',
+        'commentDeleted'
+    ];
 
     public function mount(Idea $idea)
     {
@@ -33,6 +37,11 @@ class Comments extends Component
         $this->idea->refresh();
 
         $this->gotoPage($this->getPaginatedComments()->lastPage());
+    }
+
+    public function commentDeleted()
+    {
+        $this->idea->refresh();
     }
 
     public function render()

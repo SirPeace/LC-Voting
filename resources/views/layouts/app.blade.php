@@ -123,6 +123,7 @@
         <x-notification event="ideaWasMarkedAsNotSpam" />
         <x-notification event="commentCreated" />
         <x-notification event="commentUpdated" />
+        <x-notification event="commentDeleted" />
         <x-notification :flash="session('ideaDelete')" />
         <x-notification :flash="session('ideaCreate')" />
 

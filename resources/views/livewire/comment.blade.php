@@ -39,9 +39,6 @@
                             x-show.transition.origin.top.left="isOpen"
                             @click.away="isOpen = false"
                             @keydown.escape.window="isOpen = false">
-                            <?=
-                                "[".auth()->id().", ".$comment->user_id."]"
-                            ?>
                             @can('update', $comment)
                                 <li>
                                     <a
@@ -50,24 +47,32 @@
                                         class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3"
                                         @click="
                                             isOpen = false
-                                            await Livewire.emit('setEditComment', {{ $comment->id }})
-                                            $dispatch('custom-show-edit-comment-modal', { body: '{{ $comment->body }}' })
+                                            Livewire.emit('setEditComment', {{ $comment->id }})
                                         "
                                     >
                                         Edit Comment
                                     </a>
                                 </li>
                             @endcan
+                            {{-- @can('delete', $comment) --}}
+                                <li>
+                                    <a
+                                        data-test-id="delete-comment-link"
+                                        href="#"
+                                        class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3"
+                                        @click="
+                                            isOpen = false
+                                            Livewire.emit('setDeleteComment', {{ $comment->id }})
+                                        "
+                                    >
+                                        Delete Comment
+                                    </a>
+                                </li>
+                            {{-- @endcan --}}
                             <li>
                                 <a href="#"
                                    class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">
                                     Mark as Spam
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">
-                                    Delete Comment
                                 </a>
                             </li>
                         </ul>

@@ -23,4 +23,17 @@ class CommentPolicy
         return (int) $user->id === (int) $comment->user_id
             && now()->subHour() <= $comment->created_at;
     }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Comment  $comment
+     * @return mixed
+     */
+    public function delete(User $user, Comment $comment)
+    {
+        // User is comment author and it's been less than 24 hours since comment was created
+        return (int) $user->id === (int) $comment->user_id;
+    }
 }

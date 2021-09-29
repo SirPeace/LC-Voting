@@ -3,11 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\Comment;
-use Illuminate\Http\Response;
 use Livewire\Component;
+use App\Traits\ShouldAuthorize;
 
 class EditCommentModal extends Component
 {
+    use ShouldAuthorize;
+
     public $comment;
     public $body;
 
@@ -24,12 +26,9 @@ class EditCommentModal extends Component
 
     public function updateComment()
     {
-        if (
-            auth()->guest() ||
-            optional(auth()->user())->cannot('update', $this->comment)
-        ) {
-            return abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize(
+            fn () => optional(auth()->user())->can('update', $this->comment)
+        );
 
         $this->validate();
 
