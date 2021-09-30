@@ -27,7 +27,7 @@ class MarkIdeaAsSpamModal extends Component
             return $this->emit('ideaWasMarkedAsSpam', 'Idea is already marked as spam');
         }
 
-        $this->emit('commentWasMarkedAsSpam', 'Idea was marked as spam');
+        $this->emit('ideaWasMarkedAsSpam', 'Idea was marked as spam');
     }
 
     public function render()
