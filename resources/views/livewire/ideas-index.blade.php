@@ -19,6 +19,7 @@
                 @endauth
                 @admin
                     <option value="spam">Potential spam</option>
+                    <option value="comment_spam">Potential comment spam</option>
                 @endadmin
             </select>
         </div>

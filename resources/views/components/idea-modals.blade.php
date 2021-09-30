@@ -21,3 +21,11 @@
 @auth
     <livewire:delete-comment-modal />
 @endauth
+
+@auth
+    <livewire:mark-comment-as-spam-modal />
+@endauth
+
+@admin
+    <livewire:mark-comment-as-not-spam-modal />
+@endadmin

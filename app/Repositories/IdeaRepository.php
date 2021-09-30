@@ -65,6 +65,17 @@ class IdeaRepository
                             ->withCount('spamMarks')
                             ->latest('spam_marks_count');
                     }
+
+                    if (
+                        $filter === 'comment_spam' && optional($user)->isAdmin()
+                    ) {
+                        return $query->withCount('spamMarks')
+                            ->latest('spam_marks_count')
+                            ->whereHas(
+                                'comments',
+                                fn (Builder $query) => $query->has('spamMarks')
+                            );
+                    }
                 }
             )
             // Search

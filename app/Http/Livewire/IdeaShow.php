@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Idea;
-use App\Models\User;
 use Livewire\Component;
 
 class IdeaShow extends Component
@@ -12,6 +11,7 @@ class IdeaShow extends Component
     public $user = null;
     public $votesCount;
     public $isVoted;
+    public $spamMarksCount;
 
     protected $listeners = [
         'statusUpdate',
@@ -38,7 +38,7 @@ class IdeaShow extends Component
 
     public function ideaWasMarkedAsNotSpam()
     {
-        $this->idea->refresh();
+        $this->spamMarksCount = 0;
     }
 
     public function commentCreated()
@@ -50,7 +50,8 @@ class IdeaShow extends Component
     {
         $this->idea = $idea;
         $this->user = auth()->user();
-        $this->votesCount = intval($this->idea->votes()->count());
+        $this->votesCount = $this->idea->votes()->count();
+        $this->spamMarksCount = $this->idea->spamMarks()->count();
 
         $this->isVoted = $this->idea->voters->contains($this->user);
     }
