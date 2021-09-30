@@ -5,8 +5,6 @@ use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Comment;
 use Illuminate\Http\Response;
-use App\Http\Livewire\IdeaShow;
-use App\Http\Livewire\IdeaIndex;
 use App\Http\Livewire\MarkCommentAsSpamModal;
 use App\Http\Livewire\MarkCommentAsNotSpamModal;
 use App\Http\Livewire\Comment as CommentComponent;
