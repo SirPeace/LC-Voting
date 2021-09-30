@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Idea;
+use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Comment;
 use App\Http\Livewire\EditCommentModal;
@@ -14,8 +15,12 @@ beforeEach(function () {
 });
 
 
-test('edit-comment-modal livewire component renders on the page', function () {
+test('edit-comment-modal livewire component renders on the page if user is authenticated', function () {
     $this->get(route('idea.show', ['idea' => $this->idea]))
+        ->assertDontSeeLivewire(EditCommentModal::class);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('idea.show', ['idea' => $this->idea]))
         ->assertSeeLivewire(EditCommentModal::class);
 });
 

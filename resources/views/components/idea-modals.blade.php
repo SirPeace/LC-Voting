@@ -14,10 +14,10 @@
     <livewire:mark-idea-as-not-spam-modal :idea="$idea" />
 @endadmin
 
-{{-- @can('update', $comment) --}}
+@auth
     <livewire:edit-comment-modal />
-{{-- @endcan --}}
+@endauth
 
-{{-- @can('delete', $comment) --}}
+@auth
     <livewire:delete-comment-modal />
-{{-- @endcan --}}
+@endauth

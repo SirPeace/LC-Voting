@@ -54,7 +54,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            {{-- @can('delete', $comment) --}}
+                            @can('delete', $comment)
                                 <li>
                                     <a
                                         data-test-id="delete-comment-link"
@@ -68,7 +68,7 @@
                                         Delete Comment
                                     </a>
                                 </li>
-                            {{-- @endcan --}}
+                            @endcan
                             <li>
                                 <a href="#"
                                    class="hover:bg-gray-100 block transition duration-150 ease-in px-5 py-3">
