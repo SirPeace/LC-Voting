@@ -58,7 +58,7 @@
                              class="flex items-center space-x-2 md:mt-0"
                              x-data="{ isOpen: false }">
                             <div
-                                 class="{{ $idea->status->getStylingClasses() }} text-xxs font-bold uppercase leading-none rounded-full text-center w-28 h-7 py-2 px-4">
+                                 class="status-{{ str_replace('_', '-', $idea->status->name) }} text-xxs font-bold uppercase leading-none rounded-full text-center w-28 h-7 py-2 px-4">
                                 {{ $idea->status->alias }}</div>
                             @auth
                                 <div class="relative">
@@ -114,7 +114,7 @@
                                                             $dispatch('custom-show-mark-idea-as-not-spam-modal')
                                                        "
                                                     >
-                                                        Mark as Not Spam
+                                                        Not Spam
                                                     </a>
                                                 </li>
                                             @else

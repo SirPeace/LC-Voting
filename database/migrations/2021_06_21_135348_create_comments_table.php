@@ -18,6 +18,10 @@ class CreateCommentsTable extends Migration
 
             $table->foreignId('user_id')->constrained()->onDelete('set null');
             $table->foreignId('idea_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
 
             $table->text('body');
 

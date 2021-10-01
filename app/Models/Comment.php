@@ -28,4 +28,9 @@ class Comment extends Model
     {
         return $this->belongsToMany(User::class, 'comment_spam_marks');
     }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

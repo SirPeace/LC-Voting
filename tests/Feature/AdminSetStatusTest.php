@@ -58,7 +58,7 @@ test('initial_status_is_set_correctly', function () {
 });
 
 
-test('can_set_status_correctly', function () {
+test('can_set_status_correctly_with_no_comment', function () {
     $idea = Idea::factory()->for($this->admin)->create([
         'title' => 'My First Idea',
         'description' => 'Description for my first idea',
@@ -76,6 +76,41 @@ test('can_set_status_correctly', function () {
 
     $this->assertDatabaseHas('ideas', [
         'id' => $idea->id,
+        'status_id' => $newStatus->id,
+    ]);
+
+    $this->assertDatabaseHas('comments', [
+        'body' => 'No comment.',
+        'status_id' => $newStatus->id,
+    ]);
+});
+
+
+test('can_set_status_correctly_with_comment', function () {
+    $idea = Idea::factory()->for($this->admin)->create([
+        'title' => 'My First Idea',
+        'description' => 'Description for my first idea',
+    ]);
+
+    $newStatus = Status::factory()->create();
+
+    Livewire::actingAs($this->admin)
+        ->test(SetStatus::class, [
+            'idea' => $idea,
+        ])
+        ->set('statusID', $newStatus->id)
+        ->set('comment', 'Comment body')
+        ->call('setStatusID')
+        ->assertEmitted('statusUpdate');
+
+    $this->assertDatabaseHas('ideas', [
+        'id' => $idea->id,
+        'status_id' => $newStatus->id,
+    ]);
+
+
+    $this->assertDatabaseHas('comments', [
+        'body' => 'Comment body',
         'status_id' => $newStatus->id,
     ]);
 });

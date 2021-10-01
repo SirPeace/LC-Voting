@@ -48,7 +48,7 @@ test('filtering_works_when_query_string_parameter_is_set', function () {
             return $ideas->count() === 3
                 && $ideas->every(fn ($idea) => $idea->status_id == 3);
         })
-        ->assertSeeHtmlInOrder(['bg-yellow', 'In Progress']);
+        ->assertSeeHtmlInOrder(['status-in-progress', 'In Progress']);
 });
 
 

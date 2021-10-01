@@ -3,16 +3,19 @@
 namespace App\Http\Livewire;
 
 use App\Models\Idea;
-use App\Models\User;
+use App\Models\Comment;
 use Livewire\Component;
 use App\Jobs\NotifyVoters;
-use Illuminate\Http\Response;
+use App\Traits\ShouldAuthorize;
 
 class SetStatus extends Component
 {
+    use ShouldAuthorize;
+
     public $idea;
     public $statusID;
-    public $notifyAllVoters = true;
+    public $comment;
+    public $notifyAllVoters = false;
 
     public function mount(Idea $idea)
     {
@@ -22,13 +25,19 @@ class SetStatus extends Component
 
     public function setStatusID()
     {
-        // If user is not admin abondon request
-        if (auth()->guest() || !optional(auth()->user())->isAdmin()) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize(
+            fn () => optional(auth()->user())->isAdmin()
+        );
 
         $this->idea->status_id = $this->statusID;
         $this->idea->save();
+
+        Comment::create([
+            'idea_id' => $this->idea->id,
+            'user_id' => auth()->id(),
+            'body' => $this->comment ?: 'No comment.',
+            'status_id' => $this->statusID
+        ]);
 
         $this->emit('statusUpdate');
 

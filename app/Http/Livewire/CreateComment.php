@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Idea;
 use Livewire\Component;
 use App\Models\Comment;
 use Illuminate\Http\Response;
