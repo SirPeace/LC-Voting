@@ -45,7 +45,7 @@ class CommentCreated extends Notification
     {
         return (new MailMessage)
                     ->subject('Laracasts Voting: A comment was posted on your idea')
-                    ->markdown('emails.comment-added', [
+                    ->markdown('emails.comment-created', [
                         'comment' => $this->comment,
                     ]);
     }
