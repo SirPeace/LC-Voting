@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Comment;
+use App\Notifications\CommentCreated;
 use Illuminate\Http\Response;
 
 class CreateComment extends Component
@@ -23,11 +24,13 @@ class CreateComment extends Component
 
         $this->validate();
 
-        Comment::create([
+        $newComment = Comment::create([
             'idea_id' => $this->idea->id,
             'user_id' => auth()->id(),
             'body' => $this->comment,
         ]);
+
+        $this->idea->user->notify(new CommentCreated($newComment));
 
         $this->emit('commentCreated', 'Comment was successfuly created.');
     }
