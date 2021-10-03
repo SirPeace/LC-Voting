@@ -1,4 +1,4 @@
-<div x-data="{ isOpen: false }" class="relative">
+<div x-data="{ isOpen: false }" wire:poll="getNotificationsCount" class="relative">
     <button
         @click="
             isOpen = !isOpen
