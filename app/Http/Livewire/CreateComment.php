@@ -33,6 +33,8 @@ class CreateComment extends Component
         $this->idea->user->notify(new CommentCreated($newComment));
 
         $this->emit('commentCreated', 'Comment was successfuly created.');
+
+        $this->comment = '';
     }
 
     public function render()

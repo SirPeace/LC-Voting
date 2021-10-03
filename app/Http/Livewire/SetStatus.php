@@ -41,6 +41,8 @@ class SetStatus extends Component
 
         $this->emit('statusUpdate');
 
+        $this->comment = '';
+
         if ($this->notifyAllVoters) {
             NotifyVoters::dispatch($this->idea);
         }
