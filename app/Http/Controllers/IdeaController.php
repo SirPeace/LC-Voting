@@ -48,7 +48,10 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        $backURL = url()->previous() !== url()->current()
+        $backURL = (
+            url()->previous() !== url()->current() &&
+            url()->previous() !== route('login')
+        )
             ? url()->previous()
             : route('idea.index');
 

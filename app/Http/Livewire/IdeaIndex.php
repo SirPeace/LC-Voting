@@ -2,29 +2,29 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Traits\WithAuthRedirects;
 use App\Models\Idea;
-use App\Models\User;
 use Livewire\Component;
 
 class IdeaIndex extends Component
 {
+    use WithAuthRedirects;
+
     public $idea;
-    public $user = null;
     public $votesCount = 0;
     public $isVoted;
 
     public function mount(Idea $idea)
     {
         $this->idea = $idea;
-        $this->user = auth()->user();
         $this->votesCount = $idea->votes_count;
         $this->isVoted = (bool) $this->idea->voted_by_user;
     }
 
     public function vote()
     {
-        if (!$this->user) {
-            return redirect(route('login'));
+        if (auth()->guest()) {
+            return $this->redirectToLogin();
         }
 
         if ($this->voteIdea()) {
@@ -54,7 +54,7 @@ class IdeaIndex extends Component
     private function voteIdea(): bool
     {
         try {
-            $this->idea->voters()->attach($this->user);
+            $this->idea->voters()->attach(auth()->user());
             return true;
         } catch (\Illuminate\Database\QueryException $e) {
             // User already voted for this idea
@@ -70,7 +70,7 @@ class IdeaIndex extends Component
     private function unvoteIdea(): bool
     {
         try {
-            $this->idea->voters()->detach($this->user);
+            $this->idea->voters()->detach(auth()->user());
             return true;
         } catch (\Illuminate\Database\QueryException $e) {
             // User did not vote for this idea

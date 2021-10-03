@@ -90,13 +90,13 @@
 
                 <div class="sm:flex sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
                     <a
-                        href="{{ route('login') }}"
+                        wire:click="redirectToLogin"
                         class="inline-block justify-center w-full h-11 text-xs bg-blue text-white font-semibold rounded-xl border border-blue hover:bg-blue-hover transition duration-150 ease-in px-6 py-3"
                     >
                         Log in
                     </a>
                     <a
-                        href="{{ route('register') }}"
+                        wire:click="redirectToRegister"
                         class="inline-block justify-center w-full h-11 text-xs bg-gray-200 font-semibold rounded-xl border border-gray-200 hover:border-gray-400 transition duration-150 ease-in px-6 py-3"
                     >
                         Register
