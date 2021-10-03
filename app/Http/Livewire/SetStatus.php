@@ -29,6 +29,13 @@ class SetStatus extends Component
             fn () => optional(auth()->user())->isAdmin()
         );
 
+        if ($this->idea->status_id === (int) $this->statusID) {
+            return $this->emit(
+                'ideaStatusUpdateError',
+                'Cannot update to the same status!'
+            );
+        }
+
         $this->idea->status_id = $this->statusID;
         $this->idea->save();
 
@@ -39,7 +46,10 @@ class SetStatus extends Component
             'status_id' => $this->statusID
         ]);
 
-        $this->emit('statusUpdate');
+        $this->emit(
+            'ideaStatusUpdate',
+            'The idea status was successfully updated!'
+        );
 
         $this->comment = '';
 

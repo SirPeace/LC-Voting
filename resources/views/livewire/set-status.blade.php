@@ -1,7 +1,11 @@
 <div class="relative w-full md:w-auto mt-2 md:mt-0"
      x-data="{ isOpen: false }"
      x-init="
-        window.livewire.on('statusUpdate', () => {
+        Livewire.on('ideaStatusUpdate', () => {
+            isOpen = false
+        })
+
+        Livewire.on('ideaStatusUpdateError', () => {
             isOpen = false
         })
      ">

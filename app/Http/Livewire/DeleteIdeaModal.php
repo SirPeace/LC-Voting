@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Idea;
 use App\Traits\ShouldAuthorize;
 use Livewire\Component;
 

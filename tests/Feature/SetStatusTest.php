@@ -32,14 +32,14 @@ test('only_admin_can_set_idea_status', function () {
         ->assertSet('statusID', 1)
         ->set('statusID', 2)
         ->call('setStatusID')
-        ->assertNotEmitted('statusUpdate');
+        ->assertNotEmitted('ideaStatusUpdate');
 
     Livewire::actingAs(User::factory()->create())
         ->test('set-status', ['idea' => $this->idea])
         ->assertSet('statusID', 1)
         ->set('statusID', 3)
         ->call('setStatusID')
-        ->assertNotEmitted('statusUpdate');
+        ->assertNotEmitted('ideaStatusUpdate');
 
     $this->idea->refresh();
 
@@ -51,7 +51,7 @@ test('only_admin_can_set_idea_status', function () {
         ->assertSet('statusID', 1)
         ->set('statusID', 2)
         ->call('setStatusID')
-        ->assertEmitted('statusUpdate');
+        ->assertEmitted('ideaStatusUpdate');
 
     $this->idea->refresh();
 

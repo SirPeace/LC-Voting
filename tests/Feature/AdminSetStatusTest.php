@@ -72,7 +72,7 @@ test('can_set_status_correctly_with_no_comment', function () {
         ])
         ->set('statusID', $newStatus->id)
         ->call('setStatusID')
-        ->assertEmitted('statusUpdate');
+        ->assertEmitted('ideaStatusUpdate');
 
     $this->assertDatabaseHas('ideas', [
         'id' => $idea->id,
@@ -101,7 +101,7 @@ test('can_set_status_correctly_with_comment', function () {
         ->set('statusID', $newStatus->id)
         ->set('comment', 'Comment body')
         ->call('setStatusID')
-        ->assertEmitted('statusUpdate');
+        ->assertEmitted('ideaStatusUpdate');
 
     $this->assertDatabaseHas('ideas', [
         'id' => $idea->id,
@@ -133,7 +133,7 @@ test('can_set_status_correctly_while_notifying_all_voters', function () {
         ->set('statusID', Status::factory()->create()->id)
         ->set('notifyAllVoters', true)
         ->call('setStatusID')
-        ->assertEmitted('statusUpdate');
+        ->assertEmitted('ideaStatusUpdate');
 
     Queue::assertPushed(NotifyVoters::class);
 });

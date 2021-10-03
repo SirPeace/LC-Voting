@@ -5,9 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link rel="shortcut icon" href="https://laracasts.com/favicons/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
 
-        <title>Laracasts Voting</title>
+        <title>{{ $title ?? config('app.name') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
@@ -101,6 +105,8 @@
         </main>
 
         <x-notification event="ideaUpdate" />
+        <x-notification event="ideaStatusUpdate" />
+        <x-notification event="ideaStatusUpdateError" error />
         <x-notification event="ideaWasMarkedAsSpam" />
         <x-notification event="ideaWasMarkedAsNotSpam" />
         <x-notification event="commentCreated" />

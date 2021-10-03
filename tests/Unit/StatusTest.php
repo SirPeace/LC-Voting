@@ -7,6 +7,7 @@ use Database\Seeders\CategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Database\Seeders\StatusSeeder;
+use Database\Seeders\UserSeeder;
 
 uses(RefreshDatabase::class);
 uses(TestCase::class);
@@ -14,39 +15,17 @@ uses(TestCase::class);
 beforeEach(function () {
     (new StatusSeeder)->run();
     (new CategorySeeder)->run();
+    (new UserSeeder)->run();
 });
 
 
 it('can_get_right_count_of_ideas_with_each_status', function () {
-    Idea::factory()->existing()->createMany([
-        // 1 * statuses.name = 'open'
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 1,
-        ],
-        // 2 * statuses.name = 'considering'
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 2,
-        ],
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 2,
-        ],
-        // 3 * statuses.name = 'in_progress'
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 3,
-        ],
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 3,
-        ],
-        [
-            'user_id' => User::factory()->create(),
-            'status_id' => 3,
-        ],
-    ]);
+    // 1 open
+    Idea::factory()->existing()->create(['status_id' => 1]);
+    // 2 considering
+    Idea::factory(2)->existing()->create(['status_id' => 2]);
+    // 3 in_progress
+    Idea::factory(3)->existing()->create(['status_id' => 3]);
 
     $statusesCount = Status::getStatusesCount();
 

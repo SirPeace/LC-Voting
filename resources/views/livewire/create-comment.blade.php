@@ -13,7 +13,7 @@
 
             // Go to the last comment when creating a new comment (on same page)
             if (
-                ['commentCreated', 'statusUpdate'].includes(message.updateQueue[0].payload.event) &&
+                ['commentCreated', 'ideaStatusUpdate'].includes(message.updateQueue[0].payload.event) &&
                 message.component.fingerprint.name === 'comments'
             ) {
                 const lastComment = document.querySelector('.comment-container:last-child')

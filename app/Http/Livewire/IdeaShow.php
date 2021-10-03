@@ -16,14 +16,14 @@ class IdeaShow extends Component
     public $spamMarksCount;
 
     protected $listeners = [
-        'statusUpdate',
+        'ideaStatusUpdate',
         'ideaUpdate',
         'ideaWasMarkedAsSpam',
         'ideaWasMarkedAsNotSpam',
         'commentCreated'
     ];
 
-    public function statusUpdate()
+    public function ideaStatusUpdate()
     {
         $this->idea->refresh();
     }

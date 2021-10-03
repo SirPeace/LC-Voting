@@ -18,7 +18,7 @@ class Comments extends Component
         'commentCreated',
         'commentUpdated',
         'commentDeleted',
-        'statusUpdate'
+        'ideaStatusUpdate'
     ];
 
     public function mount(Idea $idea)
@@ -45,7 +45,7 @@ class Comments extends Component
         $this->idea->refresh();
     }
 
-    public function statusUpdate()
+    public function ideaStatusUpdate()
     {
         $this->idea->refresh();
 
@@ -65,6 +65,7 @@ class Comments extends Component
             ->with('user') // n+1
             ->with('idea') // n+1
             ->where('idea_id', $this->idea->id)
+            ->orderBy('created_at')
             ->paginate();
     }
 }

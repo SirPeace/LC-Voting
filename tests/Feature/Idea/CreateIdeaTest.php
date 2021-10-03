@@ -13,7 +13,9 @@ uses(RefreshDatabase::class);
 test("create_idea_form_does_not_show_when_logged_out", function () {
     $this->get(route("idea.index"))
         ->assertSee("Please login to create an idea")
-        ->assertDontSeeLivewire("create-idea");
+        ->assertSeeLivewire("create-idea")
+        ->assertSee('Log in')
+        ->assertSee('Register');
 });
 
 
