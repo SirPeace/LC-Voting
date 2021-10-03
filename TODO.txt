@@ -1,0 +1,1 @@
+[BUG] Deleting last comment on pagination results into empty collection and 404 icon
