@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Livewire\CreateComment;
 use App\Models\Idea;
 use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Comment;
+use App\Http\Livewire\CreateComment;
+use App\Jobs\NotifyVoters;
+use App\Notifications\CommentCreated;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
@@ -47,16 +51,20 @@ test("add_comment_form_validation_works", function () {
 
 
 test("add_comment_form_works", function () {
+    Notification::fake();
+
     $user = User::factory()->create();
     $idea = Idea::factory()->create();
 
+    Notification::assertNothingSent();
+
     Livewire::actingAs($user)
-        ->test(CreateComment::class, [
-            'idea' => $idea,
-        ])
+        ->test(CreateComment::class, compact('idea'))
         ->set('comment', 'This is my first comment')
         ->call('addComment')
         ->assertEmitted('commentCreated');
+
+    Notification::assertSentTo([$idea->user], CommentCreated::class);
 
     $this->assertEquals(1, Comment::count());
     $this->assertEquals('This is my first comment', $idea->comments->first()->body);
