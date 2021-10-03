@@ -1,4 +1,8 @@
-@props(['event' => null, 'flash' => null])
+@props([
+    'event' => null,
+    'flash' => null,
+    'error' => false
+])
 
 <div x-data="{
         isVisible: false,
@@ -31,10 +35,18 @@
          class="flex justify-between items-center fixed z-10 right-0 bottom-0 transform scale-90 sm:scale-95 sm:mr-6 mb-8 w-full sm:max-w-sm shadow-lg border bg-white rounded-lg px-2 sm:px-5 py-3 sm:py-4">
 
         <div class="flex items-center">
-            <svg class="text-green mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <div class="mr-2 h-6 w-6">
+                @if (!$error)
+                    <svg class="text-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                @else
+                    <svg class="text-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                @endif
+            </div>
             <span class="font-semibold sm:text-base text-gray-700" x-text="message"></span>
         </div>
 

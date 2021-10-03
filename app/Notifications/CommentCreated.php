@@ -65,6 +65,7 @@ class CommentCreated extends Notification
             'user_name' => $this->comment->user->name,
             'user_avatar' => $this->comment->user->getAvatar(),
             'idea_id' => $this->comment->idea_id,
+            'idea_slug' => $this->comment->idea->slug,
             'idea_title' => $this->comment->idea->title,
         ];
     }

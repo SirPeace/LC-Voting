@@ -1,4 +1,5 @@
 <div
+    data-comment-id="{{ $comment->id }}"
     class="
         @if ($comment->status_id) is-status-update status-{{ str_replace('_', '-', $comment->status->name) }} @endif
         comment-container relative transition duration-500 ease-in rounded-xl flex mt-4 bg-white

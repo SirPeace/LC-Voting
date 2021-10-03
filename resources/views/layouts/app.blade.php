@@ -128,6 +128,7 @@
         <x-notification event="commentWasMarkedAsNotSpam" />
         <x-notification :flash="session('ideaDelete')" />
         <x-notification :flash="session('ideaCreate')" />
+        <x-notification :flash="session('error_message')" error />
 
         <livewire:scripts />
     </body>

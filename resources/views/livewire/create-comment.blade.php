@@ -25,6 +25,20 @@
                 }, 5000)
             }
         })
+
+        @if (session('scrollToComment'))
+            const commentToScrollTo = document.querySelector(
+                `.comment-container[data-comment-id='{{ session('scrollToComment') }}']`
+            )
+            console.log(`.comment-container[data-comment-id='{{ session('scrollToComment') }}']`)
+            console.log(commentToScrollTo)
+            commentToScrollTo.scrollIntoView({ behavior: 'smooth'})
+            commentToScrollTo.classList.add('bg-green-50')
+
+            setTimeout(() => {
+                commentToScrollTo.classList.remove('bg-green-50')
+            }, 5000)
+        @endif
      "
      class="relative w-full">
     <button type="button"
